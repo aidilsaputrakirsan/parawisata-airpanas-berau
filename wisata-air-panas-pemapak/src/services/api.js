@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 // URL dari web app yang dibuat dengan Google Apps Script
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwsaRuE3f0RPzL1E9JGADfi7G0jU5CQ5HChp9lzTgE45sFO6x0ndGKtmPinvhAzpaapAw/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzo4RGroUsjbJy_olv8udNxb89oeZ8f_SR-c_vUwRivlwFI7WP9dbuNjeSnOza_AU_ctg/exec';
+// CORS Proxy URL
+const CORS_PROXY = 'http://localhost:8080/';
 
 /**
  * Service untuk mengirim data pemesanan ke Google Sheets dan file ke Google Drive
@@ -9,10 +11,6 @@ const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwsaRuE3
 const bookingService = {
   /**
    * Mengirim data pemesanan dan file bukti pembayaran
-   * 
-   * @param {Object} formData - Data form pemesanan
-   * @param {File} paymentProofFile - File bukti pembayaran
-   * @returns {Promise} - Promise yang mengembalikan response dari server
    */
   submitBooking: async (formData, paymentProofFile) => {
     try {
@@ -30,8 +28,8 @@ const bookingService = {
         timestamp: new Date().toISOString()
       };
       
-      // Kirim data ke Google Apps Script
-      const response = await axios.post(GOOGLE_APPS_SCRIPT_URL, dataToSend);
+      // Kirim data ke Google Apps Script melalui CORS proxy
+      const response = await axios.post(CORS_PROXY + GOOGLE_APPS_SCRIPT_URL, dataToSend);
       return response.data;
     } catch (error) {
       console.error('Error submitting booking:', error);
@@ -41,12 +39,10 @@ const bookingService = {
   
   /**
    * Mendapatkan data ketersediaan / slot booking dari Google Sheets
-   * 
-   * @returns {Promise} - Promise yang mengembalikan data ketersediaan
    */
   getAvailability: async () => {
     try {
-      const response = await axios.get(`${GOOGLE_APPS_SCRIPT_URL}?action=getAvailability`);
+      const response = await axios.get(CORS_PROXY + `${GOOGLE_APPS_SCRIPT_URL}?action=getAvailability`);
       return response.data;
     } catch (error) {
       console.error('Error fetching availability:', error);
@@ -55,12 +51,7 @@ const bookingService = {
   }
 };
 
-/**
- * Mengkonversi File ke Base64 string
- * 
- * @param {File} file - File yang akan dikonversi
- * @returns {Promise<string>} - Promise yang mengembalikan string Base64
- */
+// Helper function remains the same
 const convertFileToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

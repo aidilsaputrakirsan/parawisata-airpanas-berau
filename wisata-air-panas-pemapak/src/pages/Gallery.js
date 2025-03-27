@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import '../styles/pages/gallery.css';
+import galleryHeaderBg from '../assets/images/page-headers/gallery-header.jpg';
 
 const Gallery = () => {
   useEffect(() => {
@@ -116,7 +117,7 @@ const Gallery = () => {
   return (
     <div className="gallery-page">
       {/* Header */}
-      <div className="page-header">
+      <div className="page-header" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${galleryHeaderBg})` }}>
         <Container>
           <Row className="justify-content-center">
             <Col lg={8} className="text-center text-white">

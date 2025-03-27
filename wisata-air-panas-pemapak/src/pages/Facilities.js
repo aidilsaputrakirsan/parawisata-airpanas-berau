@@ -16,6 +16,8 @@ import {
   faShieldAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
+import facilitiesHeaderBg from '../assets/images/page-headers/facilities-header.jpg';
+import ctaBg from '../assets/images/cta-bg.jpg';
 import '../styles/pages/facilities.css';
 
 const Facilities = () => {
@@ -133,7 +135,7 @@ const Facilities = () => {
   return (
     <div className="facilities-page">
       {/* Header */}
-      <div className="page-header">
+      <div className="page-header" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${facilitiesHeaderBg})` }}>
         <Container>
           <Row className="justify-content-center">
             <Col lg={8} className="text-center text-white">
@@ -335,7 +337,7 @@ const Facilities = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="cta-section py-5 text-white text-center">
+      <section className="cta-section py-5 text-white text-center" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${ctaBg})` }}>
         <Container>
           <Row className="justify-content-center">
             <Col lg={8}>

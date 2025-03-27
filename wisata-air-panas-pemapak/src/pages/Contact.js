@@ -18,6 +18,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import contactHeaderBg from '../assets/images/page-headers/contact-header.jpg';
 import '../styles/pages/contact.css';
 
 // Fix untuk marker icon di Leaflet
@@ -177,7 +178,7 @@ const Contact = () => {
   return (
     <div className="contact-page">
       {/* Header */}
-      <div className="page-header">
+      <div className="page-header" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${contactHeaderBg})` }}>
         <Container>
           <Row className="justify-content-center">
             <Col lg={8} className="text-center text-white">

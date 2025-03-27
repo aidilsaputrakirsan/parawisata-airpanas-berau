@@ -2,11 +2,12 @@ import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import heroBackground from '../../assets/images/hero-bg.jpg';
 import '../../styles/components/hero.css';
 
 const Hero = () => {
   return (
-    <section className="hero-section">
+    <section className="hero-section" style={{ backgroundImage: `url(${heroBackground})` }}>
       <div className="overlay"></div>
       <Container className="hero-container">
         <Row className="align-items-center min-vh-100">

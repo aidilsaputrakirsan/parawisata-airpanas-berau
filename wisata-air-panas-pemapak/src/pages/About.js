@@ -8,6 +8,7 @@ import {
   faWater, 
   faHeart 
 } from '@fortawesome/free-solid-svg-icons';
+import aboutHeaderBg from '../assets/images/page-headers/about-header.jpg';
 import '../styles/pages/about.css';
 
 const About = () => {
@@ -82,7 +83,7 @@ const About = () => {
   return (
     <div className="about-page">
       {/* Header */}
-      <div className="page-header">
+      <div className="page-header" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${aboutHeaderBg})` }}>
         <Container>
           <Row className="justify-content-center">
             <Col lg={8} className="text-center text-white">

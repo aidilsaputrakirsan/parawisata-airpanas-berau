@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
+    "cors-anywhere": "^0.4.4",
     "framer-motion": "^12.6.2",
     "leaflet": "^1.9.4",
     "react": "^19.0.0",

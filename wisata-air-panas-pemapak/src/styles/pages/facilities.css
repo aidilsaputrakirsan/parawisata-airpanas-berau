@@ -1,6 +1,5 @@
 /* Page Header */
 .page-header {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/page-headers/facilities-header.jpg');
     background-size: cover;
     background-position: center;
     color: var(--white-color);
@@ -112,7 +111,6 @@
   
   /* CTA Section */
   .cta-section {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/cta-bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
