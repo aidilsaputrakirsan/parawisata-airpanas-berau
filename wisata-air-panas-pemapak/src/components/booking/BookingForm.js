@@ -12,6 +12,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import bookingService from '../../services/api';
 import '../../styles/components/booking-form.css';
+import bcaQrCode from '../../assets/images/payment/bca-qr.png';
+import mandiriQrCode from '../../assets/images/payment/mandiri-qr.png';
 
 const BookingForm = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -29,13 +31,13 @@ const BookingForm = () => {
       bank: 'Bank BCA',
       accountNumber: '1234567890',
       accountName: 'PT. Wisata Air Panas Pemapak',
-      qrCodeImage: '/payment/bca-qr.png'
+      qrCodeImage: bcaQrCode
     },
     {
       bank: 'Bank Mandiri',
       accountNumber: '0987654321',
       accountName: 'PT. Wisata Air Panas Pemapak',
-      qrCodeImage: '/payment/mandiri-qr.png'
+      qrCodeImage: mandiriQrCode
     }
   ];
 

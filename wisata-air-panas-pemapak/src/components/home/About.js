@@ -9,6 +9,7 @@ import {
   faMountain 
 } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/components/about.css';
+import aboutImage from '../../assets/images/about.jpg'
 
 const AboutSection = () => {
   const features = [
@@ -64,7 +65,7 @@ const AboutSection = () => {
               viewport={{ once: true }}
             >
               <Image 
-                src="/about-placeholder.jpg" 
+                src={aboutImage}
                 alt="Wisata Air Panas Pemapak" 
                 className="img-fluid rounded shadow-lg"
               />

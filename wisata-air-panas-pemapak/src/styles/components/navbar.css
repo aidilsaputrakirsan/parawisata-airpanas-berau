@@ -2,7 +2,8 @@
     padding: 1rem 0;
     transition: var(--transition-normal);
   }
-  
+
+
   .navbar.scrolled {
     background-color: var(--white-color);
     box-shadow: var(--box-shadow-md);
@@ -66,6 +67,12 @@
   .navbar.scrolled .nav-link.active::after {
     background-color: var(--primary-color);
   }
+
+  .navbar-logo {
+    height: 30px !important;
+    max-height: 30px !important;
+    width: auto !important;
+  }
   
   .booking-btn {
     background-color: var(--secondary-color);
@@ -110,3 +117,5 @@
       display: inline-block;
     }
   }
+
+  

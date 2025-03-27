@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import facilitiesHeaderBg from '../assets/images/page-headers/facilities-header.jpg';
 import ctaBg from '../assets/images/cta-bg.jpg';
 import '../styles/pages/facilities.css';
+import facilities from '../assets/images/facilities/gazebo.jpg'
 
 const Facilities = () => {
   useEffect(() => {
@@ -37,25 +38,25 @@ const Facilities = () => {
       icon: faSwimmingPool,
       title: 'Kolam Air Panas',
       description: 'Berbagai kolam air panas dengan suhu berbeda untuk kebutuhan yang berbeda. Kolam utama dengan suhu 38-40°C ideal untuk relaksasi, kolam terapi dengan suhu 42-45°C untuk terapi, dan kolam keluarga dengan suhu lebih rendah untuk anak-anak.',
-      image: '/facilities/hot-pool.jpg'
+      image: facilities
     },
     {
       icon: faRestroom,
       title: 'Kamar Bilas',
       description: 'Kamar bilas yang bersih dan nyaman tersedia untuk pria dan wanita secara terpisah. Dilengkapi dengan shower air hangat, ruang ganti, dan loker untuk menyimpan barang berharga Anda selama berendam.',
-      image: '/facilities/shower-room.jpg'
+      image: facilities
     },
     {
       icon: faUtensils,
       title: 'Kantin & Kafetaria',
       description: 'Area makan yang nyaman dengan berbagai pilihan menu makanan dan minuman lokal maupun nasional. Tersedia juga kopi dan teh untuk menemani waktu bersantai Anda setelah berendam.',
-      image: '/facilities/cafeteria.jpg'
+      image: facilities
     },
     {
       icon: faParking,
       title: 'Area Parkir Luas',
       description: 'Area parkir yang luas dan aman untuk kendaraan roda dua maupun roda empat. Area parkir dilengkapi dengan petugas keamanan untuk menjaga kendaraan pengunjung selama berada di lokasi wisata.',
-      image: '/facilities/parking.jpg'
+      image: facilities
     }
   ];
 
@@ -65,7 +66,7 @@ const Facilities = () => {
       icon: faUmbrella,
       title: 'Gazebo & Tempat Istirahat',
       description: 'Gazebo dan tempat istirahat yang nyaman untuk bersantai sebelum atau sesudah berendam. Tersedia juga area berjemur untuk menikmati sinar matahari setelah berendam di air panas.',
-      image: '/facilities/gazebo.jpg'
+      image: {facilities}
     },
     {
       icon: faWifi,

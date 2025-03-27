@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import aboutHeaderBg from '../assets/images/page-headers/about-header.jpg';
 import '../styles/pages/about.css';
+import KisahKami from '../assets/images/about/story.jpg'
 
 const About = () => {
   useEffect(() => {
@@ -125,7 +126,7 @@ const About = () => {
                 viewport={{ once: true }}
               >
                 <Image 
-                  src="/about/story.jpg" 
+                  src={KisahKami}
                   alt="Sejarah Wisata Air Panas Pemapak" 
                   className="img-fluid rounded shadow-lg"
                 />

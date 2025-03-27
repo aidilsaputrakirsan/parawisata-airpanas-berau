@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import '../styles/pages/gallery.css';
 import galleryHeaderBg from '../assets/images/page-headers/gallery-header.jpg';
+import gallery from '../assets/images/gallery/facility-1.jpg'
 
 const Gallery = () => {
   useEffect(() => {
@@ -21,84 +22,84 @@ const Gallery = () => {
   const galleryImages = [
     {
       id: 1,
-      src: '/gallery/pool-1.jpg',
+      src: gallery,
       alt: 'Kolam Air Panas Utama',
       category: 'kolam',
       description: 'Kolam utama dengan air panas alami pada suhu sekitar 38-40°C, ideal untuk berendam dan relaksasi.'
     },
     {
       id: 2,
-      src: '/gallery/nature-1.jpg',
+      src: gallery,
       alt: 'Pemandangan Hutan di Sekitar',
       category: 'alam',
       description: 'Pemandangan hutan tropis yang masih asri di sekitar kawasan Wisata Air Panas Pemapak.'
     },
     {
       id: 3,
-      src: '/gallery/facility-1.jpg',
+      src: gallery,
       alt: 'Gazebo untuk Bersantai',
       category: 'fasilitas',
       description: 'Gazebo yang nyaman untuk bersantai sebelum atau sesudah berendam di kolam air panas.'
     },
     {
       id: 4,
-      src: '/gallery/pool-2.jpg',
+      src: gallery,
       alt: 'Kolam Air Panas Terapi',
       category: 'kolam',
       description: 'Kolam terapi dengan suhu lebih tinggi yang dipercaya bermanfaat untuk meredakan nyeri otot dan sendi.'
     },
     {
       id: 5,
-      src: '/gallery/nature-2.jpg',
+      src: gallery,
       alt: 'Sungai di Sekitar Wisata',
       category: 'alam',
       description: 'Aliran sungai jernih yang mengalir di sekitar kawasan wisata, menambah kesejukan suasana.'
     },
     {
       id: 6,
-      src: '/gallery/facility-2.jpg',
+      src: gallery,
       alt: 'Area Kantin dan Makan',
       category: 'fasilitas',
       description: 'Area kantin yang menyediakan berbagai makanan dan minuman untuk pengunjung.'
     },
     {
       id: 7,
-      src: '/gallery/pool-3.jpg',
+      src: gallery,
       alt: 'Kolam Air Panas Keluarga',
       category: 'kolam',
       description: 'Kolam keluarga dengan suhu yang lebih rendah, cocok untuk berendam bersama anak-anak.'
     },
     {
       id: 8,
-      src: '/gallery/nature-3.jpg',
+      src: gallery,
       alt: 'Sunrise di Atas Kolam',
       category: 'alam',
       description: 'Pemandangan matahari terbit yang indah di atas kolam air panas, menciptakan suasana yang magis.'
     },
     {
       id: 9,
-      src: '/gallery/facility-3.jpg',
+      src: gallery,
       alt: 'Tempat Bilas',
       category: 'fasilitas',
       description: 'Fasilitas tempat bilas yang bersih dan nyaman untuk pengunjung setelah berendam.'
     },
     {
       id: 10,
-      src: '/gallery/pool-4.jpg',
+      src: gallery,
       alt: 'Uap Air Panas',
       category: 'kolam',
       description: 'Uap yang mengepul dari kolam air panas, menciptakan suasana yang misterius dan menenangkan.'
     },
     {
       id: 11,
-      src: '/gallery/nature-4.jpg',
+      src: gallery,
       alt: 'Flora di Sekitar Wisata',
       category: 'alam',
       description: 'Berbagai jenis tanaman dan bunga yang tumbuh di sekitar kawasan wisata.'
     },
     {
       id: 12,
-      src: '/gallery/facility-4.jpg',
+      src: gallery,
       alt: 'Toko Oleh-oleh',
       category: 'fasilitas',
       description: 'Toko oleh-oleh yang menjual berbagai produk khas daerah Berau, Kalimantan Timur.'
@@ -236,7 +237,7 @@ const Gallery = () => {
                 {/* Uncomment when video is ready */}
                 {/* <div className="ratio ratio-16x9">
                   <iframe 
-                    src="https://www.youtube.com/embed/VIDEO_ID" 
+                    src="https://www.youtube.com/watch?v=sj0yp-YeP2g" 
                     title="Video Tour Wisata Air Panas Pemapak" 
                     allowFullScreen
                   ></iframe>

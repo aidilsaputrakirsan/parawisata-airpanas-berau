@@ -3,6 +3,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import '../../styles/components/navbar.css';
+import logoImage from '../../assets/images/logo.png'
 
 const MainNavbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -38,9 +39,9 @@ const MainNavbar = () => {
             className="d-flex align-items-center"
           >
             <img 
-              src="/logo-placeholder.png" 
+              src={logoImage} 
               alt="Wisata Air Panas Pemapak" 
-              height="40" 
+              style={{ height: '30px', maxHeight: '30px', width: 'auto' }} 
               className="d-inline-block align-top me-2"
             />
             <span className="brand-text">Wisata Air Panas Pemapak</span>

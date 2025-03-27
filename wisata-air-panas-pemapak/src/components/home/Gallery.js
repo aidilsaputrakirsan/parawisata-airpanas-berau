@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import '../../styles/components/gallery.css';
+import kolam1 from '../../assets/images/gallery/kolam-1.jpg';
+import alam1 from '../../assets/images/gallery/alam-1.jpg';
 
 const GallerySection = () => {
   const [modalShow, setModalShow] = useState(false);
@@ -11,49 +13,49 @@ const GallerySection = () => {
   const galleryImages = [
     {
       id: 1,
-      src: '/gallery/placeholder-1.jpg',
+      src: kolam1,
       alt: 'Kolam Air Panas Utama',
       category: 'kolam'
     },
     {
       id: 2,
-      src: '/gallery/placeholder-2.jpg',
+      src: alam1,
       alt: 'Pemandangan Alam Sekitar',
       category: 'alam'
     },
     {
       id: 3,
-      src: '/gallery/placeholder-3.jpg',
+      src: alam1,
       alt: 'Fasilitas Gazebo',
       category: 'fasilitas'
     },
     {
       id: 4,
-      src: '/gallery/placeholder-4.jpg',
+      src: alam1,
       alt: 'Area Bersantai',
       category: 'fasilitas'
     },
     {
       id: 5,
-      src: '/gallery/placeholder-5.jpg',
+      src: alam1,
       alt: 'Kolam Air Panas Keluarga',
       category: 'kolam'
     },
     {
       id: 6,
-      src: '/gallery/placeholder-6.jpg',
+      src: alam1,
       alt: 'Jalan Setapak di Area Wisata',
       category: 'alam'
     },
     {
       id: 7,
-      src: '/gallery/placeholder-7.jpg',
+      src: alam1,
       alt: 'Kantin dan Area Makan',
       category: 'fasilitas'
     },
     {
       id: 8,
-      src: '/gallery/placeholder-8.jpg',
+      src: alam1,
       alt: 'Suasana Malam dengan Lampu Hias',
       category: 'alam'
     }
