@@ -1,0 +1,112 @@
+.navbar {
+    padding: 1rem 0;
+    transition: var(--transition-normal);
+  }
+  
+  .navbar.scrolled {
+    background-color: var(--white-color);
+    box-shadow: var(--box-shadow-md);
+    padding: 0.75rem 0;
+  }
+  
+  .navbar .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar .brand-text {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--white-color);
+    transition: var(--transition-fast);
+  }
+  
+  .navbar.scrolled .brand-text {
+    color: var(--primary-color);
+  }
+  
+  .navbar .nav-link {
+    color: var(--white-color);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    margin: 0 0.125rem;
+    position: relative;
+    transition: var(--transition-fast);
+  }
+  
+  .navbar.scrolled .nav-link {
+    color: var(--dark-color);
+  }
+  
+  .navbar .nav-link:hover,
+  .navbar .nav-link:focus,
+  .navbar .nav-link.active {
+    color: var(--secondary-color);
+  }
+  
+  .navbar.scrolled .nav-link:hover,
+  .navbar.scrolled .nav-link:focus,
+  .navbar.scrolled .nav-link.active {
+    color: var(--primary-color);
+  }
+  
+  .navbar .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+  }
+  
+  .navbar.scrolled .nav-link.active::after {
+    background-color: var(--primary-color);
+  }
+  
+  .booking-btn {
+    background-color: var(--secondary-color);
+    color: var(--dark-color) !important;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 50px;
+    margin-left: 0.5rem;
+    box-shadow: var(--box-shadow-sm);
+    transition: var(--transition-fast);
+  }
+  
+  .booking-btn:hover,
+  .booking-btn:focus {
+    background-color: var(--secondary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-md);
+  }
+  
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      background-color: var(--white-color);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--box-shadow-md);
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .navbar .nav-link {
+      color: var(--dark-color);
+    }
+    
+    .navbar .nav-link.active::after {
+      width: 50px;
+      left: 0.5rem;
+      transform: none;
+    }
+    
+    .booking-btn {
+      margin-top: 0.5rem;
+      margin-left: 0;
+      display: inline-block;
+    }
+  }

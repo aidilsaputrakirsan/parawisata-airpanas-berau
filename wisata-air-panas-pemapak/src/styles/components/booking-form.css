@@ -1,0 +1,91 @@
+.booking-form-card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+  }
+  
+  .booking-form-card .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  .booking-form-card .form-control,
+  .booking-form-card .form-select {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-md);
+    border: 1px solid #ced4da;
+    transition: var(--transition-fast);
+  }
+  
+  .booking-form-card .form-control:focus,
+  .booking-form-card .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(15, 138, 157, 0.25);
+  }
+  
+  .booking-form-card .form-control.is-invalid,
+  .booking-form-card .form-select.is-invalid {
+    border-color: var(--danger-color);
+  }
+  
+  .booking-form-card .form-control.is-invalid:focus,
+  .booking-form-card .form-select.is-invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+  }
+  
+  .total-price-box {
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius-md);
+    border-left: 4px solid var(--primary-color);
+  }
+  
+  .payment-info-card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    height: fit-content;
+  }
+  
+  .payment-method {
+    border-bottom: 1px dashed #dee2e6;
+  }
+  
+  .payment-method:last-child {
+    border-bottom: none;
+  }
+  
+  .qr-code-image {
+    max-width: 180px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-sm);
+  }
+  
+  .booking-info-card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+  }
+  
+  .booking-info-card .card-header {
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  }
+  
+  .booking-info-card ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .booking-info-card li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .payment-preview {
+    background-color: var(--light-gray);
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+  }
+  
+  @media (max-width: 991.98px) {
+    .payment-info-card,
+    .booking-info-card {
+      margin-top: 2rem;
+    }
+  }

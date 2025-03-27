@@ -1,0 +1,10 @@
+/* Booking Header */
+.booking-header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/page-headers/booking-header.jpg');
+    background-size: cover;
+    background-position: center;
+    color: var(--white-color);
+    padding: 8rem 0 4rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }

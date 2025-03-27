@@ -1,0 +1,147 @@
+/* Page Header */
+.page-header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/page-headers/facilities-header.jpg');
+    background-size: cover;
+    background-position: center;
+    color: var(--white-color);
+    padding: 8rem 0 4rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  /* Facilities Tabs */
+  .facilities-nav {
+    margin-bottom: 2rem;
+  }
+  
+  .facilities-nav .nav-link {
+    color: var(--dark-color);
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    margin: 0 0.5rem;
+    font-weight: 500;
+    transition: var(--transition-fast);
+  }
+  
+  .facilities-nav .nav-link:hover {
+    background-color: rgba(15, 138, 157, 0.1);
+  }
+  
+  .facilities-nav .nav-link.active {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+  }
+  
+  /* Facility Cards */
+  .facility-detail-card {
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    transition: var(--transition-normal);
+  }
+  
+  .facility-detail-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--box-shadow-md);
+  }
+  
+  .facility-img-container {
+    max-height: 300px;
+    overflow: hidden;
+  }
+  
+  .facility-img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: var(--transition-normal);
+  }
+  
+  .facility-detail-card:hover .facility-img {
+    transform: scale(1.1);
+  }
+  
+  .facility-icon {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .facility-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  /* Rules Cards */
+  .rules-card {
+    border-radius: var(--border-radius-lg);
+    transition: var(--transition-normal);
+  }
+  
+  .rules-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--box-shadow-md);
+  }
+  
+  .rules-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-light);
+    color: var(--white-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .rules-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .rules-list {
+    padding-left: 1.5rem;
+    margin-bottom: 0;
+  }
+  
+  .rules-list li {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* CTA Section */
+  .cta-section {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/cta-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  
+  .cta-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .cta-section .btn-light:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--dark-color);
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 767.98px) {
+    .page-header {
+      padding: 6rem 0 3rem;
+    }
+    
+    .cta-section h2 {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 991.98px) {
+    .facility-img-container {
+      max-height: 200px;
+    }
+  }
