@@ -32,10 +32,10 @@ const Footer = () => {
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="me-3">
                 <FontAwesomeIcon icon={faFacebook} size="lg" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="me-3">
+              <a href="https://www.instagram.com/wisataairpanas_asinpemapak" target="_blank" rel="noopener noreferrer" className="me-3">
                 <FontAwesomeIcon icon={faInstagram} size="lg" />
               </a>
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/6282148071726" target="_blank" rel="noopener noreferrer">
                 <FontAwesomeIcon icon={faWhatsapp} size="lg" />
               </a>
             </div>
@@ -74,7 +74,7 @@ const Footer = () => {
               </li>
               <li className="mb-3">
                 <FontAwesomeIcon icon={faPhone} className="me-2" />
-                <a href="tel:+6281234567890">+62 812-3456-7890</a>
+                <a href="tel:+6282148071726">+62 821-4807-1726</a>
               </li>
               <li className="mb-3">
                 <FontAwesomeIcon icon={faEnvelope} className="me-2" />
