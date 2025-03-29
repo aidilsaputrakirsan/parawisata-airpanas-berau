@@ -3,9 +3,15 @@ import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import '../styles/pages/gallery.css';
 import galleryHeaderBg from '../assets/images/page-headers/gallery-header.jpg';
-import gallery from '../assets/images/gallery/facility-1.jpg'
 import gallerykolam1 from '../assets/images/gallery/kolam-1.jpg'
 import gallerykolam2 from '../assets/images/gallery/kolam-2.jpg'
+import gallerykolam3 from '../assets/images/gallery/kolam-3.jpg'
+import galleryalam1 from '../assets/images/gallery/alam-1.jpg'
+import galleryalam2 from '../assets/images/gallery/alam-2.jpg'
+import galleryalam3 from '../assets/images/gallery/alam-3.jpg'
+import galleryfas1 from '../assets/images/gallery/fasilitas-1.jpg'
+import galleryfas2 from '../assets/images/gallery/fasilitas-2.jpg'
+import galleryfas3 from '../assets/images/gallery/fasilitas-3.jpg'
 
 const Gallery = () => {
   useEffect(() => {
@@ -31,14 +37,14 @@ const Gallery = () => {
     },
     {
       id: 2,
-      src: gallery,
+      src: galleryalam1,
       alt: 'Pemandangan Hutan di Sekitar',
       category: 'alam',
       description: 'Pemandangan hutan tropis yang masih asri di sekitar kawasan Wisata Air Panas Pemapak.'
     },
     {
       id: 3,
-      src: gallery,
+      src: galleryfas1,
       alt: 'Gazebo untuk Bersantai',
       category: 'fasilitas',
       description: 'Gazebo yang nyaman untuk bersantai sebelum atau sesudah berendam di kolam air panas.'
@@ -52,59 +58,38 @@ const Gallery = () => {
     },
     {
       id: 5,
-      src: gallery,
+      src: galleryalam2,
       alt: 'Sungai di Sekitar Wisata',
       category: 'alam',
       description: 'Aliran sungai jernih yang mengalir di sekitar kawasan wisata, menambah kesejukan suasana.'
     },
     {
       id: 6,
-      src: gallery,
+      src: galleryfas2,
       alt: 'Area Kantin dan Makan',
       category: 'fasilitas',
       description: 'Area kantin yang menyediakan berbagai makanan dan minuman untuk pengunjung.'
     },
     {
       id: 7,
-      src: gallery,
+      src: gallerykolam3,
       alt: 'Kolam Air Panas Keluarga',
       category: 'kolam',
       description: 'Kolam keluarga dengan suhu yang lebih rendah, cocok untuk berendam bersama anak-anak.'
     },
     {
       id: 8,
-      src: gallery,
+      src: galleryalam3,
       alt: 'Sunrise di Atas Kolam',
       category: 'alam',
       description: 'Pemandangan matahari terbit yang indah di atas kolam air panas, menciptakan suasana yang magis.'
     },
     {
       id: 9,
-      src: gallery,
+      src: galleryfas3,
       alt: 'Tempat Bilas',
       category: 'fasilitas',
       description: 'Fasilitas tempat bilas yang bersih dan nyaman untuk pengunjung setelah berendam.'
-    },
-    {
-      id: 10,
-      src: gallery,
-      alt: 'Uap Air Panas',
-      category: 'kolam',
-      description: 'Uap yang mengepul dari kolam air panas, menciptakan suasana yang misterius dan menenangkan.'
-    },
-    {
-      id: 11,
-      src: gallery,
-      alt: 'Flora di Sekitar Wisata',
-      category: 'alam',
-      description: 'Berbagai jenis tanaman dan bunga yang tumbuh di sekitar kawasan wisata.'
-    },
-    {
-      id: 12,
-      src: gallery,
-      alt: 'Toko Oleh-oleh',
-      category: 'fasilitas',
-      description: 'Toko oleh-oleh yang menjual berbagai produk khas daerah Berau, Kalimantan Timur.'
     }
   ];
 
