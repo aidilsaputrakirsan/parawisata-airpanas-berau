@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import '../styles/pages/gallery.css';
 import galleryHeaderBg from '../assets/images/page-headers/gallery-header.jpg';
 import gallery from '../assets/images/gallery/facility-1.jpg'
+import gallerykolam1 from '../assets/images/gallery/kolam-1.jpg'
+import gallerykolam2 from '../assets/images/gallery/kolam-2.jpg'
 
 const Gallery = () => {
   useEffect(() => {
@@ -22,7 +24,7 @@ const Gallery = () => {
   const galleryImages = [
     {
       id: 1,
-      src: gallery,
+      src: gallerykolam1,
       alt: 'Kolam Air Panas Utama',
       category: 'kolam',
       description: 'Kolam utama dengan air panas alami pada suhu sekitar 38-40°C, ideal untuk berendam dan relaksasi.'
@@ -43,7 +45,7 @@ const Gallery = () => {
     },
     {
       id: 4,
-      src: gallery,
+      src: gallerykolam2,
       alt: 'Kolam Air Panas Terapi',
       category: 'kolam',
       description: 'Kolam terapi dengan suhu lebih tinggi yang dipercaya bermanfaat untuk meredakan nyeri otot dan sendi.'

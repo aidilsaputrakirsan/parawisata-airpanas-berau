@@ -19,7 +19,15 @@ import { motion } from 'framer-motion';
 import facilitiesHeaderBg from '../assets/images/page-headers/facilities-header.jpg';
 import ctaBg from '../assets/images/cta-bg.jpg';
 import '../styles/pages/facilities.css';
-import facilities from '../assets/images/facilities/gazebo.jpg'
+import kolamairpanas from '../assets/images/facilities/kolamairpanas.jpg'
+import kamarbilas from '../assets/images/facilities/kamarbilas.jpg'
+import kantin from '../assets/images/facilities/kantin.jpg'
+import parking from '../assets/images/facilities/parking.jpg'
+import gazebo from '../assets/images/facilities/gazebo.jpg'
+import wifi from '../assets/images/facilities/wifi.jpg'
+import musholla from '../assets/images/facilities/musholla.jpg'
+import souvenir from '../assets/images/facilities/souvenir.jpg'
+
 
 const Facilities = () => {
   useEffect(() => {
@@ -38,25 +46,25 @@ const Facilities = () => {
       icon: faSwimmingPool,
       title: 'Kolam Air Panas',
       description: 'Berbagai kolam air panas dengan suhu berbeda untuk kebutuhan yang berbeda. Kolam utama dengan suhu 38-40°C ideal untuk relaksasi, kolam terapi dengan suhu 42-45°C untuk terapi, dan kolam keluarga dengan suhu lebih rendah untuk anak-anak.',
-      image: facilities
+      image: kolamairpanas
     },
     {
       icon: faRestroom,
       title: 'Kamar Bilas',
       description: 'Kamar bilas yang bersih dan nyaman tersedia untuk pria dan wanita secara terpisah. Dilengkapi dengan shower air hangat, ruang ganti, dan loker untuk menyimpan barang berharga Anda selama berendam.',
-      image: facilities
+      image: kamarbilas
     },
     {
       icon: faUtensils,
       title: 'Kantin & Kafetaria',
       description: 'Area makan yang nyaman dengan berbagai pilihan menu makanan dan minuman lokal maupun nasional. Tersedia juga kopi dan teh untuk menemani waktu bersantai Anda setelah berendam.',
-      image: facilities
+      image: kantin
     },
     {
       icon: faParking,
       title: 'Area Parkir Luas',
       description: 'Area parkir yang luas dan aman untuk kendaraan roda dua maupun roda empat. Area parkir dilengkapi dengan petugas keamanan untuk menjaga kendaraan pengunjung selama berada di lokasi wisata.',
-      image: facilities
+      image: parking
     }
   ];
 
@@ -66,25 +74,25 @@ const Facilities = () => {
       icon: faUmbrella,
       title: 'Gazebo & Tempat Istirahat',
       description: 'Gazebo dan tempat istirahat yang nyaman untuk bersantai sebelum atau sesudah berendam. Tersedia juga area berjemur untuk menikmati sinar matahari setelah berendam di air panas.',
-      image: {facilities}
+      image: gazebo
     },
     {
       icon: faWifi,
       title: 'WiFi Gratis',
       description: 'Koneksi internet WiFi gratis di seluruh area wisata untuk memudahkan Anda tetap terhubung dan berbagi momen liburan Anda dengan keluarga dan teman melalui media sosial.',
-      image: '/facilities/wifi.jpg'
+      image: wifi
     },
     {
       icon: faPrayingHands,
       title: 'Musholla',
       description: 'Tempat ibadah yang bersih dan nyaman untuk pengunjung muslim. Dilengkapi dengan perlengkapan sholat dan tempat wudhu yang bersih sehingga pengunjung dapat beribadah dengan nyaman.',
-      image: '/facilities/musholla.jpg'
+      image: musholla
     },
     {
       icon: faStore,
       title: 'Toko Oleh-oleh',
       description: 'Toko yang menjual berbagai cinderamata dan oleh-oleh khas Berau, Kalimantan Timur. Tersedia berbagai produk lokal seperti kerajinan tangan, makanan dan minuman khas daerah.',
-      image: '/facilities/souvenir.jpg'
+      image: souvenir
     }
   ];
 
@@ -92,43 +100,40 @@ const Facilities = () => {
   const rulesAndInfo = [
     {
       icon: faInfoCircle,
-      title: 'Informasi Umum',
+      title: 'Persiapan Berendam',
       items: [
-        'Wisata Air Panas Pemapak buka setiap hari dari pukul 08.00 - 17.00 WITA',
-        'Tiket masuk: Dewasa Rp 25.000, Anak-anak (5-12 tahun) Rp 15.000',
-        'Paket keluarga tersedia untuk 2 dewasa dan 2 anak dengan harga Rp 70.000',
-        'Pengunjung dapat menyewa handuk dan loker dengan biaya tambahan'
+        'Sebaiknya makan terlebih dahulu, jangan berendam dalam keadaan perut kosong',
+        'Membilas badan terlebih dahulu (rinse the body first)',
+        'Mulai berendam dengan kaki terlebih dahulu, hindari mencuci muka',
+        'Lepas aksesoris seperti jam, cincin, gelang'
       ]
     },
     {
       icon: faUsers,
-      title: 'Aturan Pengunjung',
+      title: 'Keamanan Barang',
       items: [
-        'Pengunjung wajib mandi sebelum memasuki kolam air panas',
-        'Dilarang membawa makanan dan minuman ke area kolam',
-        'Dilarang merusak fasilitas dan tanaman di sekitar area wisata',
-        'Anak-anak harus didampingi oleh orang dewasa',
-        'Pengunjung dengan kondisi medis tertentu disarankan berkonsultasi dengan dokter sebelum berendam'
+        'Simpan pakaian dan barang berharga di dalam loker'
       ]
     },
     {
       icon: faClock,
-      title: 'Waktu Berendam',
+      title: 'Peringatan Penting',
       items: [
-        'Waktu berendam yang disarankan adalah 15-20 menit per sesi',
-        'Istirahat setidaknya 10 menit sebelum melanjutkan sesi berendam berikutnya',
-        'Hindari berendam lebih dari 3 sesi dalam satu hari kunjungan',
-        'Segera keluar dari kolam jika merasa pusing atau tidak nyaman'
+        'Berendam secukupnya, bila anda sudah merasa pusing segera keluar dari kolam rendam',
+        'Dilarang memakai alas kaki',
+        'Dilarang berendam bagi yang mempunyai penyakit (jantung, hipertensi, epilepsi, asma)',
+        'Dilarang membawa handphone/camera',
+        'Dilarang memakai sabun/sampo di kolam rendam',
+        'Dilarang berbuat asusila',
+        'Dilarang berendam bagi orang yang sedang dalam pengaruh alkohol, masa menstruasi, memiliki luka terbuka, dan wanita hamil',
+        'Dilarang memakai jeans ke kolam rendam'
       ]
     },
     {
       icon: faShieldAlt,
-      title: 'Keamanan dan Kesehatan',
+      title: 'Bantuan Darurat',
       items: [
-        'Tersedia petugas keamanan dan penyelamat di sekitar area kolam',
-        'Kotak P3K tersedia di beberapa titik strategis',
-        'Pengunjung disarankan minum air putih secukupnya sebelum dan sesudah berendam',
-        'Pengunjung dengan luka terbuka tidak diperkenankan berendam'
+        'Hubungi petugas jaga bila anda merasakan gejala sakit'
       ]
     }
   ];
