@@ -1,70 +1,188 @@
-# Getting Started with Create React App
+# Wisata Air Panas Pemapak
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Wisata Air Panas Pemapak Logo](https://github.com/aidilsaputrakirsan/parawisata-airpanas-berau/blob/main/wisata-air-panas-pemapak/src/logo.png)
 
-## Available Scripts
+## 🌟 Overview
 
-In the project directory, you can run:
+Wisata Air Panas Pemapak is a responsive website for a natural hot spring tourist destination located in Biatan Bapinang, Berau, East Kalimantan, Indonesia. The site provides visitors with comprehensive information about the hot springs, including facilities, gallery, booking capabilities, and more.
 
-### `npm start`
+## ✨ Live Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Visit the live website: [https://wisata-air-panas-pemapak.vercel.app/](https://wisata-air-panas-pemapak.vercel.app/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🌴 Features
 
-### `npm test`
+- **Responsive Design**: Fully optimized for all devices from mobile to desktop
+- **Multi-page Layout**: Includes Home, About, Facilities, Gallery, Contact, and Booking pages
+- **Interactive Elements**:
+  - Animated sections with Framer Motion
+  - Image gallery with filtering options
+  - Interactive maps using Leaflet
+  - Testimonials carousel
+- **Booking System**: Complete booking form with validation and payment information
+- **Contact Form**: Easy way for visitors to get in touch
+- **Interactive Map**: Location information with an embedded map
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Technology Stack
 
-### `npm run build`
+- **Frontend**:
+  - React 19
+  - React Router v7 for navigation
+  - React Bootstrap for UI components
+  - FontAwesome for icons
+  - Framer Motion for animations
+  - CSS with responsive design principles
+  
+- **Maps & Visualization**:
+  - Leaflet for interactive maps
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **API Integration**:
+  - Axios for HTTP requests
+  - Custom booking service for Google Sheets integration
+  - CORS proxy for handling cross-origin requests
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Deployment**:
+  - Vercel for hosting
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Installation & Setup
 
-### `npm run eject`
+### Prerequisites
+- Node.js (v16.0.0 or later)
+- npm or yarn
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Installation Steps
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/wisata-air-panas-pemapak.git
+   cd wisata-air-panas-pemapak
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. Set up the CORS proxy (for local development with the booking API):
+   ```bash
+   node cors-proxy.js
+   ```
 
-## Learn More
+4. Start the development server:
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+5. Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📁 Project Structure
 
-### Code Splitting
+```
+wisata-air-panas-pemapak/
+├── public/                     # Static files
+├── src/                        # Source files
+│   ├── assets/                 # Images and other static assets
+│   │   ├── images/
+│   │   │   ├── about/
+│   │   │   ├── facilities/
+│   │   │   ├── gallery/
+│   │   │   ├── page-headers/
+│   │   │   └── payment/
+│   ├── components/             # Reusable components
+│   │   ├── booking/            # Booking-related components
+│   │   ├── common/             # Common UI components (Navbar, Footer, etc.)
+│   │   └── home/               # Homepage-specific components
+│   ├── contexts/               # React contexts
+│   ├── pages/                  # Page components
+│   │   ├── About.js
+│   │   ├── Booking.js
+│   │   ├── Contact.js
+│   │   ├── Facilities.js
+│   │   ├── Gallery.js
+│   │   └── Home.js
+│   ├── services/               # API services
+│   │   └── api.js              # Booking and availability API
+│   ├── styles/                 # CSS styles
+│   │   ├── components/         # Component-specific styles
+│   │   ├── pages/              # Page-specific styles
+│   │   └── global.css          # Global styles and variables
+│   ├── utils/                  # Utility functions
+│   ├── App.js                  # Main App component with routing
+│   ├── index.js                # Entry point
+│   └── ...                     # Other configuration files
+├── cors-proxy.js               # CORS proxy for API requests
+├── package.json                # Project dependencies and scripts
+└── README.md                   # Project documentation
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🔧 Configuration
 
-### Analyzing the Bundle Size
+### Booking System
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The booking system uses a Google Apps Script backend to process bookings and store data in Google Sheets. To configure this:
 
-### Making a Progressive Web App
+1. Update the `GOOGLE_APPS_SCRIPT_URL` in `src/services/api.js` with your own Google Apps Script deployment URL.
+2. Ensure the CORS proxy is running for local development to avoid cross-origin issues.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Maps
 
-### Advanced Configuration
+The location map is configured with coordinates in `src/components/home/Location.js` and `src/pages/Contact.js`. Update these coordinates to match your actual location:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```javascript
+// Example from Location.js
+const position = [2.1722, 117.9021]; // Latitude, Longitude
+```
+
+## 📦 Build & Deployment
+
+### Building for Production
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+This creates a `build` folder with optimized production files.
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The site is currently deployed on Vercel. To deploy your own version:
 
-### `npm run build` fails to minify
+1. Create an account on [Vercel](https://vercel.com)
+2. Connect your GitHub repository
+3. Configure the build settings (default settings work for Create React App)
+4. Deploy!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👥 Authors
+
+- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
+
+## 🙏 Acknowledgments
+
+- Photos from [Unsplash](https://unsplash.com)
+- Icons from [FontAwesome](https://fontawesome.com)
+- UI Components from [React Bootstrap](https://react-bootstrap.github.io/)
+- Animations by [Framer Motion](https://www.framer.com/motion/)
+
+---
+
+© 2025 Wisata Air Panas Pemapak. All Rights Reserved.
