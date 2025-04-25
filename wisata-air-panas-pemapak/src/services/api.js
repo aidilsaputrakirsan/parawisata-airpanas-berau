@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-// URL dari web app yang dibuat dengan Google Apps Script
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzo4RGroUsjbJy_olv8udNxb89oeZ8f_SR-c_vUwRivlwFI7WP9dbuNjeSnOza_AU_ctg/exec';
-// CORS Proxy URL
-const CORS_PROXY = 'http://localhost:3000/';
+// Deteksi environment
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+// Konfigurasi URL proxy berdasarkan environment
+const API_URL = isDevelopment
+  ? 'http://localhost:8080/https://script.google.com/macros/s/AKfycbzo4RGroUsjbJy_olv8udNxb89oeZ8f_SR-c_vUwRivlwFI7WP9dbuNjeSnOza_AU_ctg/exec'
+  : '/api/proxy'; // URL relatif ke serverless function
 
 /**
  * Service untuk mengirim data pemesanan ke Google Sheets dan file ke Google Drive
@@ -28,8 +31,8 @@ const bookingService = {
         timestamp: new Date().toISOString()
       };
       
-      // Kirim data ke Google Apps Script melalui CORS proxy
-      const response = await axios.post(CORS_PROXY + GOOGLE_APPS_SCRIPT_URL, dataToSend);
+      // Kirim data melalui proxy yang sesuai
+      const response = await axios.post(API_URL, dataToSend);
       return response.data;
     } catch (error) {
       console.error('Error submitting booking:', error);
@@ -42,7 +45,7 @@ const bookingService = {
    */
   getAvailability: async () => {
     try {
-      const response = await axios.get(CORS_PROXY + `${GOOGLE_APPS_SCRIPT_URL}?action=getAvailability`);
+      const response = await axios.get(`${API_URL}?action=getAvailability`);
       return response.data;
     } catch (error) {
       console.error('Error fetching availability:', error);
@@ -51,7 +54,7 @@ const bookingService = {
   }
 };
 
-// Helper function remains the same
+// Helper function untuk konversi file ke Base64
 const convertFileToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
