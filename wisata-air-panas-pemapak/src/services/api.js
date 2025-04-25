@@ -3,7 +3,7 @@ import axios from 'axios';
 // URL dari web app yang dibuat dengan Google Apps Script
 const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzo4RGroUsjbJy_olv8udNxb89oeZ8f_SR-c_vUwRivlwFI7WP9dbuNjeSnOza_AU_ctg/exec';
 // CORS Proxy URL
-const CORS_PROXY = 'http://localhost:8080/';
+const CORS_PROXY = 'http://localhost:3000/';
 
 /**
  * Service untuk mengirim data pemesanan ke Google Sheets dan file ke Google Drive
