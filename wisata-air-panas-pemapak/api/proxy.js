@@ -1,4 +1,5 @@
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxTrjJUI-GSVYMpnQdZI-obROfxHw01I3zO4mQZQUyDmx55X9acU5SzAZIJiPbGh5UxfA/exec';
+//email innosys
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzza1HHc2FgU9aqyAk6NoXrV9szTPxuPQz6arjFbwXf-SMuoik2kjuCWT5qIZUk7zKs/exec';
 
 export default async function handler(req, res) {
   // Set CORS headers
