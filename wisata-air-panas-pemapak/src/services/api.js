@@ -3,10 +3,9 @@ import axios from 'axios';
 // Deteksi environment
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-// URL untuk proxy
-const API_URL = isDevelopment
-  ? 'http://localhost:8080/https://script.google.com/macros/s/AKfycbxTrjJUI-GSVYMpnQdZI-obROfxHw01I3zO4mQZQUyDmx55X9acU5SzAZIJiPbGh5UxfA/exec' // URL untuk development dengan CORS proxy
-  : '/api/proxy'; // URL relatif ke serverless function di Vercel
+// URL untuk API
+// Di Vercel, kita gunakan path relatif ke serverless function
+const API_URL = '/api/proxy';
 
 /**
  * Service untuk mengirim data pemesanan ke Google Sheets dan file ke Google Drive
@@ -27,8 +26,14 @@ const bookingService = {
         console.log(`Ukuran file setelah kompresi: ${fileToProcess.size} bytes`);
       }
       
-      // Mengubah file menjadi Base64
+      // Mengubah file menjadi Base64 dengan kompresi tambahan jika perlu
       const base64File = await convertFileToBase64(fileToProcess);
+      console.log(`Ukuran base64: ${base64File.length} karakter`);
+      
+      // Tambahkan pengecekan ukuran file base64
+      if (base64File.length > 5000000) { // 5MB dalam base64
+        throw new Error('Ukuran file terlalu besar setelah kompresi. Mohon gunakan file dengan ukuran lebih kecil.');
+      }
       
       // Menyiapkan data untuk dikirim
       const dataToSend = {
@@ -43,33 +48,53 @@ const bookingService = {
       
       console.log("Mengirim data ke:", API_URL);
       
-      // Kirim data melalui proxy yang sesuai dengan timeout yang lebih panjang
-      const response = await axios.post(API_URL, dataToSend, {
-        timeout: 120000, // 120 detik timeout untuk file upload (ditingkatkan dari 60s)
+      // Kirim data melalui fetch API untuk kompatibilitas yang lebih baik
+      const response = await fetch(API_URL, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(dataToSend)
       });
       
-      console.log("Response dari server:", response.status);
-      
-      // Handle potential error responses with success status
-      if (response.data && response.data.status === 'error') {
-        throw new Error(response.data.message || 'Unknown error from server');
+      // Periksa status HTTP
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Error response: ${response.status}`, errorText);
+        
+        let errorMessage = `Gagal mengirim data (${response.status})`;
+        try {
+          // Coba parse error sebagai JSON jika memungkinkan
+          const errorJson = JSON.parse(errorText);
+          if (errorJson.message) {
+            errorMessage += `: ${errorJson.message}`;
+          }
+        } catch (e) {
+          // Jika bukan JSON, gunakan teks error sebagai pesan
+          if (errorText && errorText.length < 100) {
+            errorMessage += `: ${errorText}`;
+          }
+        }
+        
+        throw new Error(errorMessage);
       }
       
-      return response.data;
+      const data = await response.json();
+      console.log("Response dari server:", data);
+      
+      // Handle potential error responses with success status
+      if (data && data.status === 'error') {
+        throw new Error(data.message || 'Terjadi kesalahan pada server');
+      }
+      
+      return data;
     } catch (error) {
       console.error('Error submitting booking:', error);
       
       // Provide more detailed error info
       const errorDetails = {
         message: error.message || 'Unknown error',
-        response: error.response ? {
-          status: error.response.status,
-          data: error.response.data
-        } : null,
-        isNetworkError: error.request && !error.response
+        isNetworkError: error.message && error.message.includes('network')
       };
       
       console.error('Detailed error info:', errorDetails);
@@ -78,7 +103,7 @@ const bookingService = {
       throw {
         ...error,
         details: errorDetails,
-        userMessage: 'Terjadi kesalahan saat mengirim data. Silakan coba lagi atau hubungi admin.'
+        userMessage: error.message || 'Terjadi kesalahan saat mengirim data. Silakan coba lagi atau hubungi admin.'
       };
     }
   },
@@ -89,21 +114,29 @@ const bookingService = {
   getAvailability: async () => {
     try {
       console.log("Mengambil data availability dari:", `${API_URL}?action=getAvailability`);
-      const response = await axios.get(`${API_URL}?action=getAvailability`, {
-        timeout: 30000 // 30 detik timeout
-      });
       
-      // Handle potential error responses with success status
-      if (response.data && response.data.status === 'error') {
-        throw new Error(response.data.message || 'Unknown error from server');
+      const response = await fetch(`${API_URL}?action=getAvailability`);
+      
+      // Periksa status HTTP
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Error response: ${response.status}`, errorText);
+        throw new Error(`Gagal mengambil data (${response.status})`);
       }
       
-      return response.data;
+      const data = await response.json();
+      
+      // Handle potential error responses with success status
+      if (data && data.status === 'error') {
+        throw new Error(data.message || 'Terjadi kesalahan pada server');
+      }
+      
+      return data;
     } catch (error) {
       console.error('Error fetching availability:', error);
       throw {
         ...error,
-        userMessage: 'Gagal mengambil data ketersediaan. Silakan coba lagi nanti.'
+        userMessage: error.message || 'Gagal mengambil data ketersediaan. Silakan coba lagi nanti.'
       };
     }
   },
@@ -113,12 +146,11 @@ const bookingService = {
    */
   testConnection: async () => {
     try {
-      const response = await axios.get(`${API_URL}?action=test`, {
-        timeout: 10000
-      });
+      const response = await fetch(`${API_URL}?action=test`);
+      const data = await response.json();
       return {
         success: true,
-        data: response.data
+        data: data
       };
     } catch (error) {
       console.error('Connection test failed:', error);
@@ -154,9 +186,9 @@ const compressImage = (file) => {
         let width = img.width;
         let height = img.height;
         
-        // Jika gambar terlalu besar, kurangi ukurannya
-        const MAX_WIDTH = 1200;
-        const MAX_HEIGHT = 1200;
+        // Jika gambar terlalu besar, kurangi ukurannya lebih agresif
+        const MAX_WIDTH = 800; // Turunkan dari 1200 ke 800
+        const MAX_HEIGHT = 800; // Turunkan dari 1200 ke 800
         
         if (width > height) {
           if (width > MAX_WIDTH) {
@@ -176,7 +208,7 @@ const compressImage = (file) => {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
         
-        // Konversi ke blob dengan kualitas 0.7 (70%)
+        // Konversi ke blob dengan kualitas 0.5 (50%)
         canvas.toBlob((blob) => {
           // Buat file baru dari blob
           const newFile = new File([blob], file.name, {
@@ -184,7 +216,7 @@ const compressImage = (file) => {
             lastModified: Date.now()
           });
           resolve(newFile);
-        }, 'image/jpeg', 0.6); // Reduced quality to 60% for smaller file size
+        }, 'image/jpeg', 0.5); // Reduced quality to 50% for smaller file size
       };
       img.onerror = reject;
     };

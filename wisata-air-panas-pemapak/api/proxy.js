@@ -1,7 +1,7 @@
-// api/proxy.js
+// api/proxy.js - Versi khusus untuk Vercel
 import axios from 'axios';
 
-// URL Google Apps Script - Update dengan URL hasil deployment baru
+// URL Google Apps Script - Pastikan sudah di-deploy sebagai web app dengan akses publik
 const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxTrjJUI-GSVYMpnQdZI-obROfxHw01I3zO4mQZQUyDmx55X9acU5SzAZIJiPbGh5UxfA/exec';
 
 export default async function handler(req, res) {
@@ -18,62 +18,111 @@ export default async function handler(req, res) {
   }
   
   try {
+    console.log(`Processing ${req.method} request to ${GOOGLE_APPS_SCRIPT_URL}`);
+    
     let response;
     
     if (req.method === 'GET') {
       // Forward GET request with query params
       const queryString = new URLSearchParams(req.query).toString();
-      console.log('Forwarding GET request to:', `${GOOGLE_APPS_SCRIPT_URL}?${queryString}`);
+      console.log(`Sending GET request to: ${GOOGLE_APPS_SCRIPT_URL}?${queryString}`);
       
-      response = await axios.get(`${GOOGLE_APPS_SCRIPT_URL}?${queryString}`, {
-        timeout: 30000 // 30 detik timeout
+      // Gunakan fetch API untuk menghindari masalah dengan axios di lingkungan serverless
+      const fetchResponse = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?${queryString}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
       });
-    } else if (req.method === 'POST') {
-      console.log('Forwarding POST request to Google Apps Script');
       
-      // Check if request body is too large
-      const contentLength = parseInt(req.headers['content-length'] || '0', 10);
-      if (contentLength > 10485760) { // 10MB limit
-        return res.status(413).json({ 
-          error: 'Request entity too large',
-          message: 'Maximum allowed size is 10MB'
+      if (!fetchResponse.ok) {
+        throw new Error(`HTTP error! Status: ${fetchResponse.status}`);
+      }
+      
+      const data = await fetchResponse.json();
+      return res.status(200).json(data);
+      
+    } else if (req.method === 'POST') {
+      console.log('Processing POST request');
+      
+      // Verifikasi req.body tidak kosong
+      if (!req.body) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Request body is empty'
         });
       }
       
-      // Forward POST request with body
-      response = await axios.post(GOOGLE_APPS_SCRIPT_URL, req.body, {
-        timeout: 120000, // 120 detik timeout (ditingkatkan dari 60s)
+      console.log(`Request body size: ${JSON.stringify(req.body).length} bytes`);
+      
+      // Periksa apakah ini adalah permintaan booking dengan file bukti pembayaran
+      const hasPaymentProof = req.body.paymentProof && req.body.paymentProof.base64Data;
+      if (hasPaymentProof) {
+        console.log(`Booking request with payment proof: ${req.body.paymentProof.name}`);
+        
+        // Verifikasi ukuran base64 tidak terlalu besar
+        const base64Size = (req.body.paymentProof.base64Data || '').length;
+        console.log(`Base64 data size: ${base64Size} chars`);
+        
+        if (base64Size > 5000000) { // ~5MB dalam bentuk base64
+          return res.status(413).json({
+            status: 'error',
+            message: 'File terlalu besar, maksimal 3MB'
+          });
+        }
+      }
+      
+      // Gunakan fetch API untuk mengirim POST
+      const fetchResponse = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(req.body)
       });
+      
+      if (!fetchResponse.ok) {
+        const errorText = await fetchResponse.text();
+        console.error(`Error response from Apps Script: ${fetchResponse.status}`, errorText);
+        throw new Error(`HTTP error! Status: ${fetchResponse.status}, Detail: ${errorText}`);
+      }
+      
+      const data = await fetchResponse.json();
+      return res.status(200).json(data);
+      
     } else {
       // Method not supported
       return res.status(405).json({ error: 'Method not allowed' });
     }
-    
-    console.log('Response received from Google Apps Script:', response.status);
-    
-    // Return response from Google Apps Script
-    return res.status(200).json(response.data);
   } catch (error) {
     console.error('Proxy error:', error.message);
     
-    // Log detail error untuk debugging
+    // Catat informasi error yang lengkap
+    let errorDetail = {
+      message: error.message || 'Unknown error occurred',
+      stack: error.stack,
+      isAxiosError: !!error.isAxiosError
+    };
+    
     if (error.response) {
       console.error('Error response status:', error.response.status);
       console.error('Error response data:', error.response.data);
+      errorDetail.status = error.response.status;
+      errorDetail.data = error.response.data;
     } else if (error.request) {
       console.error('No response received from the request');
+      errorDetail.noResponse = true;
     }
     
-    // Detailed error response
+    console.error('Detailed error:', JSON.stringify(errorDetail, null, 2));
+    
+    // Beri respons dengan informasi error yang jelas
     return res.status(500).json({
       status: 'error',
-      error: 'Proxy error',
-      message: error.message || 'Unknown error occurred',
-      details: error.response?.data || 'No additional details available',
-      hint: 'Pastikan Google Apps Script sudah di-deploy sebagai web app dengan akses publik'
+      message: 'Terjadi kesalahan saat memproses permintaan',
+      detail: error.message,
+      hint: 'Pastikan Google Apps Script sudah benar dan hubungi admin untuk bantuan'
     });
   }
 }
