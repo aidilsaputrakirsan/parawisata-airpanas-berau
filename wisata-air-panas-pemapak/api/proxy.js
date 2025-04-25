@@ -1,6 +1,3 @@
-// api/proxy.js - Versi khusus untuk Vercel
-import axios from 'axios';
-
 // URL Google Apps Script - Pastikan sudah di-deploy sebagai web app dengan akses publik
 const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxTrjJUI-GSVYMpnQdZI-obROfxHw01I3zO4mQZQUyDmx55X9acU5SzAZIJiPbGh5UxfA/exec';
 
