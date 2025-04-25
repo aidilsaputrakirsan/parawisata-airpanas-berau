@@ -1,11 +1,32 @@
-import axios from 'axios';
-
 // Deteksi environment
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 // URL untuk API
-// Di Vercel, kita gunakan path relatif ke serverless function
-const API_URL = '/api/proxy';
+const API_URL = isDevelopment ? 'http://localhost:3000/api/proxy' : '/api/proxy';
+
+// Helper function untuk menangani respons Fetch
+const handleFetchResponse = async (response) => {
+  if (!response.ok) {
+    const errorText = await response.text();
+    let errorMessage = `Gagal mengirim data (${response.status})`;
+    try {
+      const errorJson = JSON.parse(errorText);
+      if (errorJson.message) {
+        errorMessage += `: ${errorJson.message}`;
+      }
+    } catch (e) {
+      if (errorText && errorText.length < 100) {
+        errorMessage += `: ${errorText}`;
+      }
+    }
+    throw new Error(errorMessage);
+  }
+  const data = await response.json();
+  if (data && data.status === 'error') {
+    throw new Error(data.message || 'Terjadi kesalahan pada server');
+  }
+  return data;
+};
 
 /**
  * Service untuk mengirim data pemesanan ke Google Sheets dan file ke Google Drive
@@ -17,24 +38,24 @@ const bookingService = {
   submitBooking: async (formData, paymentProofFile) => {
     try {
       console.log("Mulai proses submit booking");
-      
+
       // Kompresi gambar jika ukurannya terlalu besar
       let fileToProcess = paymentProofFile;
-      if (paymentProofFile.size > 1000000) { // 1MB
+      if (paymentProofFile.size > 500000) { // 500KB sebelum kompresi
         console.log("File terlalu besar, melakukan kompresi");
         fileToProcess = await compressImage(paymentProofFile);
         console.log(`Ukuran file setelah kompresi: ${fileToProcess.size} bytes`);
       }
-      
-      // Mengubah file menjadi Base64 dengan kompresi tambahan jika perlu
+
+      // Mengubah file menjadi Base64
       const base64File = await convertFileToBase64(fileToProcess);
       console.log(`Ukuran base64: ${base64File.length} karakter`);
-      
-      // Tambahkan pengecekan ukuran file base64
-      if (base64File.length > 5000000) { // 5MB dalam base64
-        throw new Error('Ukuran file terlalu besar setelah kompresi. Mohon gunakan file dengan ukuran lebih kecil.');
+
+      // Pengecekan ukuran file base64
+      if (base64File.length > 2000000) { // ~2MB dalam base64, ~1.5MB file asli
+        throw new Error('Ukuran file terlalu besar setelah kompresi. Maksimal 1.5MB.');
       }
-      
+
       // Menyiapkan data untuk dikirim
       const dataToSend = {
         ...formData,
@@ -45,61 +66,34 @@ const bookingService = {
         },
         timestamp: new Date().toISOString()
       };
-      
+
       console.log("Mengirim data ke:", API_URL);
-      
-      // Kirim data melalui fetch API untuk kompatibilitas yang lebih baik
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataToSend)
-      });
-      
-      // Periksa status HTTP
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`Error response: ${response.status}`, errorText);
-        
-        let errorMessage = `Gagal mengirim data (${response.status})`;
-        try {
-          // Coba parse error sebagai JSON jika memungkinkan
-          const errorJson = JSON.parse(errorText);
-          if (errorJson.message) {
-            errorMessage += `: ${errorJson.message}`;
-          }
-        } catch (e) {
-          // Jika bukan JSON, gunakan teks error sebagai pesan
-          if (errorText && errorText.length < 100) {
-            errorMessage += `: ${errorText}`;
-          }
-        }
-        
-        throw new Error(errorMessage);
+
+      // Kirim data dengan timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 detik timeout
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dataToSend),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        return await handleFetchResponse(response);
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
       }
-      
-      const data = await response.json();
-      console.log("Response dari server:", data);
-      
-      // Handle potential error responses with success status
-      if (data && data.status === 'error') {
-        throw new Error(data.message || 'Terjadi kesalahan pada server');
-      }
-      
-      return data;
     } catch (error) {
       console.error('Error submitting booking:', error);
-      
-      // Provide more detailed error info
       const errorDetails = {
         message: error.message || 'Unknown error',
         isNetworkError: error.message && error.message.includes('network')
       };
-      
       console.error('Detailed error info:', errorDetails);
-      
-      // Rethrow with more context
       throw {
         ...error,
         details: errorDetails,
@@ -107,31 +101,26 @@ const bookingService = {
       };
     }
   },
-  
+
   /**
    * Mendapatkan data ketersediaan / slot booking dari Google Sheets
    */
   getAvailability: async () => {
     try {
       console.log("Mengambil data availability dari:", `${API_URL}?action=getAvailability`);
-      
-      const response = await fetch(`${API_URL}?action=getAvailability`);
-      
-      // Periksa status HTTP
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`Error response: ${response.status}`, errorText);
-        throw new Error(`Gagal mengambil data (${response.status})`);
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 detik timeout
+      try {
+        const response = await fetch(`${API_URL}?action=getAvailability`, {
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        return await handleFetchResponse(response);
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
       }
-      
-      const data = await response.json();
-      
-      // Handle potential error responses with success status
-      if (data && data.status === 'error') {
-        throw new Error(data.message || 'Terjadi kesalahan pada server');
-      }
-      
-      return data;
     } catch (error) {
       console.error('Error fetching availability:', error);
       throw {
@@ -140,18 +129,28 @@ const bookingService = {
       };
     }
   },
-  
+
   /**
    * Test connection to the server
    */
   testConnection: async () => {
     try {
-      const response = await fetch(`${API_URL}?action=test`);
-      const data = await response.json();
-      return {
-        success: true,
-        data: data
-      };
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 detik timeout
+      try {
+        const response = await fetch(`${API_URL}?action=test`, {
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        const data = await response.json();
+        return {
+          success: true,
+          data: data
+        };
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
+      }
     } catch (error) {
       console.error('Connection test failed:', error);
       return {
@@ -181,15 +180,13 @@ const compressImage = (file) => {
       const img = new Image();
       img.src = event.target.result;
       img.onload = () => {
-        // Buat canvas untuk kompresi
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
-        
-        // Jika gambar terlalu besar, kurangi ukurannya lebih agresif
-        const MAX_WIDTH = 800; // Turunkan dari 1200 ke 800
-        const MAX_HEIGHT = 800; // Turunkan dari 1200 ke 800
-        
+
+        const MAX_WIDTH = 600;
+        const MAX_HEIGHT = 600;
+
         if (width > height) {
           if (width > MAX_WIDTH) {
             height *= MAX_WIDTH / width;
@@ -201,22 +198,20 @@ const compressImage = (file) => {
             height = MAX_HEIGHT;
           }
         }
-        
+
         canvas.width = width;
         canvas.height = height;
-        
+
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        
-        // Konversi ke blob dengan kualitas 0.5 (50%)
+
         canvas.toBlob((blob) => {
-          // Buat file baru dari blob
           const newFile = new File([blob], file.name, {
             type: 'image/jpeg',
             lastModified: Date.now()
           });
           resolve(newFile);
-        }, 'image/jpeg', 0.5); // Reduced quality to 50% for smaller file size
+        }, 'image/jpeg', 0.3); // Kualitas 30%
       };
       img.onerror = reject;
     };
