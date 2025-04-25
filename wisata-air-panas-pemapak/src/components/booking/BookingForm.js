@@ -91,9 +91,8 @@ const BookingForm = () => {
     if (file) {
       // Validasi ukuran file (max 2MB)
       if (file.size > 2 * 1024 * 1024) {
-        alert('Ukuran file terlalu besar. Maksimal 2MB.');
-        e.target.value = null;
-        return;
+        // Tampilkan peringatan tetapi tetap terima file (kompres nanti)
+        alert('Ukuran file besar (lebih dari 2MB). File akan dikompresi saat diunggah.');
       }
       
       // Validasi tipe file (hanya gambar)
@@ -111,6 +110,8 @@ const BookingForm = () => {
         setPreviewUrl(reader.result);
       };
       reader.readAsDataURL(file);
+      
+      console.log(`File dipilih: ${file.name}, ukuran: ${file.size} bytes, tipe: ${file.type}`);
     }
   };
 
@@ -125,6 +126,10 @@ const BookingForm = () => {
     setSubmitError(null);
 
     try {
+      // Tambahkan log untuk debugging
+      console.log("Mulai proses submit booking");
+      console.log(`File yang dipilih: ${selectedFile.name}, ukuran: ${selectedFile.size} bytes`);
+      
       // Gabungkan data form dengan data jumlah pengunjung
       const formData = {
         ...data,
@@ -133,8 +138,11 @@ const BookingForm = () => {
         totalAmount: totalPrice
       };
       
+      console.log("Data form yang dikirim:", formData);
+      
       // Kirim data ke API
       const response = await bookingService.submitBooking(formData, selectedFile);
+      console.log("Response dari API:", response);
       
       if (response.status === 'success') {
         setSubmitSuccess(true);
@@ -152,7 +160,22 @@ const BookingForm = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      setSubmitError('Terjadi kesalahan saat mengirim data. Silakan coba lagi.');
+      
+      // Tampilkan detail error untuk debugging
+      let errorMessage = 'Terjadi kesalahan saat mengirim data.';
+      
+      if (error.response) {
+        errorMessage += ` Status: ${error.response.status}`;
+        if (error.response.data && error.response.data.message) {
+          errorMessage += `, Detail: ${error.response.data.message}`;
+        }
+      } else if (error.request) {
+        errorMessage += ' Tidak ada response dari server.';
+      } else {
+        errorMessage += ` Detail: ${error.message}`;
+      }
+      
+      setSubmitError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
