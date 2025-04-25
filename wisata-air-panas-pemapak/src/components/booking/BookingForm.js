@@ -207,21 +207,7 @@ const BookingForm = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Card className="booking-form-card shadow-lg">
-              <Card.Body className="p-4 p-md-5">
-                {submitSuccess && (
-                  <Alert variant="success" className="mb-4">
-                    <strong>Pemesanan berhasil dikirim!</strong> Terima kasih atas pemesanan Anda. 
-                    Kami telah mengirimkan email konfirmasi ke alamat email yang Anda berikan. 
-                    Tim kami akan memverifikasi pembayaran Anda dalam waktu 1x24 jam.
-                  </Alert>
-                )}
-                
-                {submitError && (
-                  <Alert variant="danger" className="mb-4">
-                    {submitError}
-                  </Alert>
-                )}
-                
+              <Card.Body className="p-4 p-md-5">                
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Form.Group className="mb-4">
                     <Form.Label>Nama Lengkap</Form.Label>
@@ -431,6 +417,19 @@ const BookingForm = () => {
                     {isSubmitting ? 'Sedang Mengirim...' : 'Kirim Pemesanan'}
                   </Button>
                 </Form>
+                {submitSuccess && (
+                  <Alert variant="success" className="mb-4">
+                    <strong>Pemesanan berhasil dikirim!</strong> Terima kasih atas pemesanan Anda. 
+                    Kami telah mengirimkan email konfirmasi ke alamat email yang Anda berikan. 
+                    Tim kami akan memverifikasi pembayaran Anda dalam waktu 1x24 jam.
+                  </Alert>
+                )}
+                
+                {submitError && (
+                  <Alert variant="danger" className="mb-4">
+                    {submitError}
+                  </Alert>
+                )}
               </Card.Body>
             </Card>
           </motion.div>
