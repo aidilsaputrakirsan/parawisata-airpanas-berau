@@ -77,6 +77,45 @@ const Dashboard = () => {
     }
   };
 
+  // Fungsi formatTime yang diperbaiki untuk menghilangkan 1899-12-30
+  const formatTime = (timeString) => {
+    if (!timeString) return '';
+    
+    try {
+      // Case 1: Jika string mengandung "1899-12-30" (format default Excel/Sheets untuk waktu)
+      if (typeof timeString === 'string' && timeString.includes('1899-12-30')) {
+        // Extract hanya jam dari string, apapun formatnya
+        const matches = timeString.match(/(\d{1,2}):\d{2}/);
+        if (matches && matches[1]) {
+          return `${matches[1].padStart(2, '0')}:00`;
+        }
+      }
+      
+      // Case 2: Format standar jam:menit atau jam:menit:detik
+      if (typeof timeString === 'string' && timeString.includes(':')) {
+        const hours = timeString.split(':')[0].padStart(2, '0');
+        return `${hours}:00`;
+      }
+      
+      // Case 3: Jika input adalah objek Date
+      if (timeString instanceof Date) {
+        return timeString.getHours().toString().padStart(2, '0') + ':00';
+      }
+      
+      // Default: Coba ekstrak angka pertama sebagai jam jika semua cara lain gagal
+      const hourMatch = String(timeString).match(/^(\d{1,2})/);
+      if (hourMatch && hourMatch[1]) {
+        return `${hourMatch[1].padStart(2, '0')}:00`;
+      }
+      
+      // Fallback terakhir
+      return timeString;
+    } catch (e) {
+      console.error("Time formatting error:", e, timeString);
+      return timeString;
+    }
+  };
+
   // Get badge variant based on status
   const getStatusBadge = (status) => {
     switch (status) {
@@ -169,7 +208,7 @@ const Dashboard = () => {
                   <td>{formatDate(booking.Timestamp)}</td>
                   <td>{booking['Full Name']}</td>
                   <td>{formatDate(booking['Visit Date'])}</td>
-                  <td>{booking['Visit Time']}</td>
+                  <td>{formatTime(booking['Visit Time'])}</td>
                   <td>{booking.Adults} dewasa, {booking.Children} anak</td>
                   <td>Rp {typeof booking['Total Amount'] === 'number' ? booking['Total Amount'].toLocaleString() : booking['Total Amount']}</td>
                   <td>

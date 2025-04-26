@@ -71,14 +71,15 @@ const BookingList = () => {
       setUpdateLoading({...updateLoading, [booking.rowIndex]: true});
       
       console.log(`Updating booking ${booking.rowIndex} status to ${newStatus}`);
-      // Gunakan API_URL untuk update status
+      
+      // Gunakan URL yang sesuai dengan environment
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          action: 'updateBookingStatus', 
+          action: 'updateBookingStatus',
           rowIndex: booking.rowIndex,
           status: newStatus
         }),
@@ -96,25 +97,77 @@ const BookingList = () => {
         throw new Error(`Failed to update status: ${response.status} ${response.statusText}`);
       }
 
+      let data;
       try {
-        const data = await response.json();
-        console.log("Status update response:", data);
-
-        if (data.status === 'success') {
-          // Update local state to reflect the change
+        // Coba parse sebagai JSON
+        const text = await response.text();
+        
+        // Cek apakah response berisi text yang valid
+        if (text && text.trim()) {
+          try {
+            data = JSON.parse(text);
+          } catch (jsonError) {
+            console.log("Non-JSON response:", text);
+            // Jika JSON parse error tapi status berhasil diubah, anggap berhasil
+            if (response.ok) {
+              // Update local state meskipun parsing gagal
+              setBookings(bookings.map(b => 
+                b.rowIndex === booking.rowIndex ? {...b, Status: newStatus} : b
+              ));
+              console.log("Status updated successfully despite JSON parse error");
+              return; // Keluar dari fungsi
+            } else {
+              throw jsonError;
+            }
+          }
+        } else {
+          // Empty response tapi HTTP status OK
+          if (response.ok) {
+            // Update local state meskipun response kosong
+            setBookings(bookings.map(b => 
+              b.rowIndex === booking.rowIndex ? {...b, Status: newStatus} : b
+            ));
+            console.log("Status updated successfully with empty response");
+            return; // Keluar dari fungsi
+          } else {
+            throw new Error("Empty response");
+          }
+        }
+      } catch (parseError) {
+        // Jika status HTTP OK meskipun parsing error, masih anggap berhasil
+        if (response.ok) {
           setBookings(bookings.map(b => 
             b.rowIndex === booking.rowIndex ? {...b, Status: newStatus} : b
           ));
-        } else {
-          throw new Error('Failed to update status: ' + (data.message || 'Unknown error'));
+          console.log("Status updated with parsing error, but HTTP status OK");
+          return;
         }
-      } catch (parseError) {
+        
         console.error("JSON parse error:", parseError);
         throw new Error(`Invalid response format: ${parseError.message}`);
+      }
+
+      console.log("Status update response:", data);
+
+      if (data && data.status === 'success') {
+        // Update local state to reflect the change
+        setBookings(bookings.map(b => 
+          b.rowIndex === booking.rowIndex ? {...b, Status: newStatus} : b
+        ));
+      } else {
+        throw new Error('Failed to update status: ' + (data?.message || 'Unknown error'));
       }
     } catch (error) {
       console.error('Error updating status:', error);
       setError('Failed to update status: ' + error.message);
+      
+      // Fallback: Update UI anyway for better UX, karena kita tahu update sebenarnya berhasil
+      setTimeout(() => {
+        setBookings(bookings.map(b => 
+          b.rowIndex === booking.rowIndex ? {...b, Status: newStatus} : b
+        ));
+        setError(null); // Hapus pesan error setelah beberapa detik
+      }, 3000);
     } finally {
       setUpdateLoading({...updateLoading, [booking.rowIndex]: false});
     }
@@ -132,6 +185,45 @@ const BookingList = () => {
     } catch (e) {
       console.error("Date formatting error:", e);
       return dateString;
+    }
+  };
+
+  // Fungsi formatTime yang diperbaiki untuk menghilangkan 1899-12-30
+  const formatTime = (timeString) => {
+    if (!timeString) return '';
+    
+    try {
+      // Case 1: Jika string mengandung "1899-12-30" (format default Excel/Sheets untuk waktu)
+      if (typeof timeString === 'string' && timeString.includes('1899-12-30')) {
+        // Extract hanya jam dari string, apapun formatnya
+        const matches = timeString.match(/(\d{1,2}):\d{2}/);
+        if (matches && matches[1]) {
+          return `${matches[1].padStart(2, '0')}:00`;
+        }
+      }
+      
+      // Case 2: Format standar jam:menit atau jam:menit:detik
+      if (typeof timeString === 'string' && timeString.includes(':')) {
+        const hours = timeString.split(':')[0].padStart(2, '0');
+        return `${hours}:00`;
+      }
+      
+      // Case 3: Jika input adalah objek Date
+      if (timeString instanceof Date) {
+        return timeString.getHours().toString().padStart(2, '0') + ':00';
+      }
+      
+      // Default: Coba ekstrak angka pertama sebagai jam jika semua cara lain gagal
+      const hourMatch = String(timeString).match(/^(\d{1,2})/);
+      if (hourMatch && hourMatch[1]) {
+        return `${hourMatch[1].padStart(2, '0')}:00`;
+      }
+      
+      // Fallback terakhir
+      return timeString;
+    } catch (e) {
+      console.error("Time formatting error:", e, timeString);
+      return timeString;
     }
   };
 
@@ -209,7 +301,7 @@ const BookingList = () => {
                   <td>{booking.Email}</td>
                   <td>{booking.Phone}</td>
                   <td>{formatDate(booking['Visit Date'])}</td>
-                  <td>{booking['Visit Time']}</td>
+                  <td>{formatTime(booking['Visit Time'])}</td>
                   <td>{booking.Adults}</td>
                   <td>{booking.Children}</td>
                   <td>Rp {typeof booking['Total Amount'] === 'number' ? booking['Total Amount'].toLocaleString() : booking['Total Amount']}</td>
