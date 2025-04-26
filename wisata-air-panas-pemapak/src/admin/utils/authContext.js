@@ -19,26 +19,47 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await fetch('/api/admin/auth', {
+      // Log untuk debugging
+      console.log("Mencoba login dengan username:", username);
+      
+      // Tambahkan parameter action=auth untuk memudahkan identifikasi di proxy
+      const response = await fetch('/api/proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ 
+          username, 
+          password,
+          action: 'auth' // Tambahkan parameter ini untuk identifikasi di proxy.js
+        }),
       });
-
-      const data = await response.json();
-
-      if (data.status === 'success') {
-        localStorage.setItem('adminToken', data.token);
-        setToken(data.token);
-        return { success: true };
-      } else {
-        return { success: false, message: data.message };
+  
+      // Debug respons mentah
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        return { success: false, message: `Server error: ${response.status}` };
+      }
+      
+      // Coba parse JSON
+      try {
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          localStorage.setItem('adminToken', data.token);
+          setToken(data.token);
+          return { success: true };
+        } else {
+          return { success: false, message: data.message || "Login gagal" };
+        }
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+        return { success: false, message: "Format respons server tidak valid" };
       }
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, message: 'Login failed. Please check your network connection or contact administrator.' };
+      return { success: false, message: 'Login gagal. Periksa koneksi jaringan atau hubungi administrator.' };
     }
   };
 
