@@ -17,61 +17,40 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Gunakan /api/proxy dengan parameter action=getAllBookings
         const response = await fetch('/api/proxy?action=getAllBookings');
-        
-        if (!response.ok) {
-          console.error(`Dashboard API error status: ${response.status} ${response.statusText}`);
-          try {
-            const errorText = await response.text();
-            console.error("Error response content:", errorText);
-          } catch (e) {
-            console.error("Could not read error response");
-          }
-          throw new Error(`Failed to load dashboard data: ${response.status} ${response.statusText}`);
-        }
-        
-        // Try to parse response as JSON
-        try {
-          const data = await response.json();
-          console.log("Dashboard data received:", data);
+        const data = await response.json();
 
-          if (data.status === 'success') {
-            const bookings = data.data || [];
+        if (data.status === 'success') {
+          const bookings = data.data;
+          
+          // Calculate stats
+          const pending = bookings.filter(b => !b.Status || b.Status === 'Pending').length;
+          const confirmed = bookings.filter(b => b.Status === 'Confirmed').length;
+          const cancelled = bookings.filter(b => b.Status === 'Cancelled').length;
+          const completed = bookings.filter(b => b.Status === 'Completed').length;
+          
+          // Get 5 most recent bookings
+          const recentBookings = [...bookings]
+            .sort((a, b) => {
+              // Convert to date objects if not already
+              const dateA = a.Timestamp instanceof Date ? a.Timestamp : new Date(a.Timestamp);
+              const dateB = b.Timestamp instanceof Date ? b.Timestamp : new Date(b.Timestamp);
+              return dateB - dateA;
+            })
+            .slice(0, 5);
             
-            // Calculate stats
-            const pending = bookings.filter(b => !b.Status || b.Status === 'Pending').length;
-            const confirmed = bookings.filter(b => b.Status === 'Confirmed').length;
-            const cancelled = bookings.filter(b => b.Status === 'Cancelled').length;
-            const completed = bookings.filter(b => b.Status === 'Completed').length;
-            
-            // Get 5 most recent bookings
-            const recentBookings = [...bookings]
-              .sort((a, b) => {
-                // Convert to date objects if not already
-                const dateA = a.Timestamp instanceof Date ? a.Timestamp : new Date(a.Timestamp);
-                const dateB = b.Timestamp instanceof Date ? b.Timestamp : new Date(b.Timestamp);
-                return dateB - dateA;
-              })
-              .slice(0, 5);
-              
-            setStats({
-              total: bookings.length,
-              pending,
-              confirmed,
-              cancelled,
-              completed,
-              recentBookings
-            });
-          } else {
-            throw new Error('Failed to load dashboard data: ' + (data.message || 'Unknown error'));
-          }
-        } catch (parseError) {
-          console.error("JSON parse error:", parseError);
-          throw new Error(`Invalid response format: ${parseError.message}`);
+          setStats({
+            total: bookings.length,
+            pending,
+            confirmed,
+            cancelled,
+            completed,
+            recentBookings
+          });
+        } else {
+          setError('Failed to load data: ' + data.message);
         }
       } catch (error) {
-        console.error('Error loading dashboard data:', error);
         setError('Error loading data: ' + error.message);
       } finally {
         setLoading(false);
@@ -118,18 +97,7 @@ const Dashboard = () => {
   }
 
   if (error) {
-    return (
-      <div>
-        <Alert variant="danger">{error}</Alert>
-        <Button 
-          variant="primary" 
-          onClick={() => window.location.reload()}
-          className="mt-3"
-        >
-          Coba Lagi
-        </Button>
-      </div>
-    );
+    return <Alert variant="danger">{error}</Alert>;
   }
 
   return (
