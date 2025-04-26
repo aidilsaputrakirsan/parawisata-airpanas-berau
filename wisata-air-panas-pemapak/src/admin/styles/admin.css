@@ -1,0 +1,76 @@
+/* Admin layout styles */
+.admin-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .admin-layout .container {
+    flex: 1;
+  }
+  
+  .admin-layout footer {
+    margin-top: auto;
+  }
+  
+  /* Card styles */
+  .card {
+    transition: all 0.2s ease-in-out;
+    border-radius: 0.5rem;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Table styles */
+  .table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+  }
+  
+  /* Button styles */
+  .btn-outline-primary {
+    border-width: 2px;
+  }
+  
+  /* Login page styles */
+  .login-card {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-card .card-header {
+    border-bottom: none;
+    padding: 20px;
+  }
+  
+  .login-card .card-body {
+    padding: 30px;
+  }
+  
+  /* Badge custom styles */
+  .badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .card {
+      margin-bottom: 15px;
+    }
+    
+    .table-responsive {
+      font-size: 0.9rem;
+    }
+  }
