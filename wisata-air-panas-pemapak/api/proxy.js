@@ -1,6 +1,6 @@
 //email innosys
 // URL Google Apps Script
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz0UYfeBqBYlUN4MpOljAdx_sxoexTobELxWUTGdrPYSCrH3-w5urMl2tBwtrg_kiuY/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbweRBA2DbyK3WdUurKRgpsGgJ_gPJ8Z7VECWVmTKNpgLIjlALQzoHkwraPg0fRpcXlD/exec';
 
 // Hardcoded credentials untuk admin
 const ADMIN_USERNAME = "admin@wisataairpemapak.com";
@@ -23,8 +23,11 @@ export default async function handler(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const path = url.pathname;
   
-  // Handle Admin Auth
-  if (path === '/api/admin/auth') {
+  // Handle Admin Auth - either by path or by detecting login credentials in body
+  if (path === '/api/admin/auth' || 
+      (req.method === 'POST' && req.body && req.body.username && req.body.password && 
+       Object.keys(req.body).filter(key => key !== 'action').length <= 2)) {
+    
     if (req.method === 'POST') {
       try {
         const { username, password } = req.body;
@@ -166,7 +169,7 @@ export default async function handler(req, res) {
         console.log(`Sending GET request to: ${GOOGLE_APPS_SCRIPT_URL}?${queryString}`);
         
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 12000); // Increased timeout
         try {
           const fetchResponse = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?${queryString}`, {
             method: 'GET',
@@ -179,11 +182,24 @@ export default async function handler(req, res) {
           clearTimeout(timeoutId);
 
           if (!fetchResponse.ok) {
-            const errorText = await fetchResponse.text();
+            let errorText;
+            try {
+              errorText = await fetchResponse.text();
+            } catch (textError) {
+              errorText = 'Could not read error response';
+            }
+            console.error(`HTTP error in GET request: ${fetchResponse.status}`, errorText);
             throw new Error(`HTTP error! Status: ${fetchResponse.status}, Detail: ${errorText}`);
           }
 
-          const data = await fetchResponse.json();
+          let data;
+          try {
+            data = await fetchResponse.json();
+          } catch (jsonError) {
+            console.error('JSON parse error:', jsonError);
+            throw new Error(`Invalid JSON response from server`);
+          }
+          
           return res.status(200).json(data);
         } catch (error) {
           clearTimeout(timeoutId);
@@ -201,12 +217,13 @@ export default async function handler(req, res) {
         }
   
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // Increased timeout
         try {
           const fetchResponse = await fetch(GOOGLE_APPS_SCRIPT_URL, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
             },
             body: JSON.stringify(req.body),
             signal: controller.signal
@@ -214,12 +231,24 @@ export default async function handler(req, res) {
           clearTimeout(timeoutId);
 
           if (!fetchResponse.ok) {
-            const errorText = await fetchResponse.text();
+            let errorText;
+            try {
+              errorText = await fetchResponse.text();
+            } catch (textError) {
+              errorText = 'Could not read error response';
+            }
             console.error(`Error response from Apps Script: ${fetchResponse.status}`, errorText);
             throw new Error(`HTTP error! Status: ${fetchResponse.status}, Detail: ${errorText}`);
           }
 
-          const data = await fetchResponse.json();
+          let data;
+          try {
+            data = await fetchResponse.json();
+          } catch (jsonError) {
+            console.error('JSON parse error:', jsonError);
+            throw new Error(`Invalid JSON response from server`);
+          }
+          
           return res.status(200).json(data);
         } catch (error) {
           clearTimeout(timeoutId);
@@ -227,7 +256,10 @@ export default async function handler(req, res) {
         }
       } else {
         // Method not supported
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ 
+          status: 'error', 
+          message: 'Method not allowed' 
+        });
       }
     } catch (error) {
       console.error('Proxy error:', error.message);

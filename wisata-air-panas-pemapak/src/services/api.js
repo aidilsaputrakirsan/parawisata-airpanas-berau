@@ -7,25 +7,40 @@ const API_URL = isDevelopment ? 'http://localhost:3000/api/proxy' : '/api/proxy'
 // Helper function untuk menangani respons Fetch
 const handleFetchResponse = async (response) => {
   if (!response.ok) {
-    const errorText = await response.text();
     let errorMessage = `Gagal mengirim data (${response.status})`;
+    
     try {
-      const errorJson = JSON.parse(errorText);
-      if (errorJson.message) {
-        errorMessage += `: ${errorJson.message}`;
+      const errorText = await response.text();
+      try {
+        // Try to parse as JSON
+        const errorJson = JSON.parse(errorText);
+        if (errorJson.message) {
+          errorMessage += `: ${errorJson.message}`;
+        }
+      } catch (parseError) {
+        // If not valid JSON, use the raw text if it's not too long
+        if (errorText && errorText.length < 100) {
+          errorMessage += `: ${errorText}`;
+        }
       }
     } catch (e) {
-      if (errorText && errorText.length < 100) {
-        errorMessage += `: ${errorText}`;
-      }
+      // If reading response fails
+      console.error("Error reading response:", e);
     }
+    
     throw new Error(errorMessage);
   }
-  const data = await response.json();
-  if (data && data.status === 'error') {
-    throw new Error(data.message || 'Terjadi kesalahan pada server');
+  
+  try {
+    const data = await response.json();
+    if (data && data.status === 'error') {
+      throw new Error(data.message || 'Terjadi kesalahan pada server');
+    }
+    return data;
+  } catch (parseError) {
+    console.error("JSON parse error:", parseError);
+    throw new Error(`Invalid JSON response: ${parseError.message}`);
   }
-  return data;
 };
 
 /**
@@ -60,7 +75,7 @@ const bookingService = {
       const dataToSend = {
         ...formData,
         paymentProof: {
-          name: paymentProofFile.name,
+          name: fileToProcess.name,
           type: fileToProcess.type,
           base64Data: base64File
         },
@@ -71,7 +86,7 @@ const bookingService = {
 
       // Kirim data dengan timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 detik timeout
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // Increased timeout to 15 seconds
       try {
         const response = await fetch(API_URL, {
           method: 'POST',
@@ -85,6 +100,9 @@ const bookingService = {
         return await handleFetchResponse(response);
       } catch (error) {
         clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+          throw new Error('Request timed out. The server is taking too long to respond.');
+        }
         throw error;
       }
     } catch (error) {
@@ -113,10 +131,27 @@ const bookingService = {
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 detik timeout
       try {
         const response = await fetch(`${API_URL}?action=getAvailability`, {
-          signal: controller.signal
+          signal: controller.signal,
+          headers: {
+            'Accept': 'application/json'
+          }
         });
         clearTimeout(timeoutId);
-        return await handleFetchResponse(response);
+        
+        // Check if response is OK before attempting to parse
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error response:", errorText);
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        try {
+          const data = await response.json();
+          return data;
+        } catch (parseError) {
+          console.error("Failed to parse JSON response:", parseError);
+          throw new Error(`Failed to parse server response as JSON. The server might be returning an error.`);
+        }
       } catch (error) {
         clearTimeout(timeoutId);
         throw error;
@@ -142,11 +177,20 @@ const bookingService = {
           signal: controller.signal
         });
         clearTimeout(timeoutId);
-        const data = await response.json();
-        return {
-          success: true,
-          data: data
-        };
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        try {
+          const data = await response.json();
+          return {
+            success: true,
+            data: data
+          };
+        } catch (parseError) {
+          throw new Error('Invalid JSON response from server');
+        }
       } catch (error) {
         clearTimeout(timeoutId);
         throw error;
@@ -184,8 +228,8 @@ const compressImage = (file) => {
         let width = img.width;
         let height = img.height;
 
-        const MAX_WIDTH = 600;
-        const MAX_HEIGHT = 600;
+        const MAX_WIDTH = 800;   // Increased from 600
+        const MAX_HEIGHT = 800;  // Increased from 600
 
         if (width > height) {
           if (width > MAX_WIDTH) {
@@ -211,7 +255,7 @@ const compressImage = (file) => {
             lastModified: Date.now()
           });
           resolve(newFile);
-        }, 'image/jpeg', 0.3); // Kualitas 30%
+        }, 'image/jpeg', 0.6); // Increased quality from 0.3 to 0.6
       };
       img.onerror = reject;
     };
