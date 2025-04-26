@@ -15,16 +15,44 @@ const BookingList = () => {
     const fetchBookings = async () => {
       try {
         setLoading(true);
+        
+        console.log("Fetching bookings data...");
         const response = await fetch('/api/admin/bookings');
-        const data = await response.json();
-
-        if (data.status === 'success') {
-          setBookings(data.data);
-        } else {
-          setError('Failed to load bookings: ' + data.message);
+        
+        // Debug response
+        if (!response.ok) {
+          console.error(`Bookings API error status: ${response.status} ${response.statusText}`);
+          try {
+            const errorText = await response.text();
+            console.error("Error response content:", errorText);
+          } catch (e) {
+            console.error("Could not read error response");
+          }
+          throw new Error(`Failed to load bookings: ${response.status} ${response.statusText}`);
+        }
+        
+        // Try to parse response as JSON
+        try {
+          const data = await response.json();
+          console.log("Bookings data received:", data);
+          
+          if (data.status === 'success') {
+            if (Array.isArray(data.data)) {
+              setBookings(data.data);
+            } else {
+              console.warn("Response data is not an array:", data);
+              setBookings([]);
+            }
+          } else {
+            throw new Error('Failed to load bookings: ' + (data.message || 'Unknown error'));
+          }
+        } catch (parseError) {
+          console.error("JSON parse error:", parseError);
+          throw new Error(`Invalid response format: ${parseError.message}`);
         }
       } catch (error) {
-        setError('Error loading bookings: ' + error.message);
+        console.error('Error loading bookings:', error);
+        setError('Error loading data: ' + error.message);
       } finally {
         setLoading(false);
       }
@@ -41,6 +69,7 @@ const BookingList = () => {
     try {
       setUpdateLoading({...updateLoading, [booking.rowIndex]: true});
       
+      console.log(`Updating booking ${booking.rowIndex} status to ${newStatus}`);
       const response = await fetch('/api/admin/bookings', {
         method: 'POST',
         headers: {
@@ -52,18 +81,37 @@ const BookingList = () => {
         }),
       });
 
-      const data = await response.json();
+      // Debug response
+      if (!response.ok) {
+        console.error(`Status update error: ${response.status} ${response.statusText}`);
+        try {
+          const errorText = await response.text();
+          console.error("Error response content:", errorText);
+        } catch (e) {
+          console.error("Could not read error response");
+        }
+        throw new Error(`Failed to update status: ${response.status} ${response.statusText}`);
+      }
 
-      if (data.status === 'success') {
-        // Update local state to reflect the change
-        setBookings(bookings.map(b => 
-          b.rowIndex === booking.rowIndex ? {...b, Status: newStatus} : b
-        ));
-      } else {
-        setError('Failed to update status: ' + data.message);
+      try {
+        const data = await response.json();
+        console.log("Status update response:", data);
+
+        if (data.status === 'success') {
+          // Update local state to reflect the change
+          setBookings(bookings.map(b => 
+            b.rowIndex === booking.rowIndex ? {...b, Status: newStatus} : b
+          ));
+        } else {
+          throw new Error('Failed to update status: ' + (data.message || 'Unknown error'));
+        }
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+        throw new Error(`Invalid response format: ${parseError.message}`);
       }
     } catch (error) {
-      setError('Error updating status: ' + error.message);
+      console.error('Error updating status:', error);
+      setError('Failed to update status: ' + error.message);
     } finally {
       setUpdateLoading({...updateLoading, [booking.rowIndex]: false});
     }
@@ -72,11 +120,16 @@ const BookingList = () => {
   // Format date for display
   const formatDate = (dateString) => {
     if (!dateString) return '';
-    if (dateString instanceof Date) {
-      return new Date(dateString).toLocaleDateString('id-ID');
+    try {
+      if (dateString instanceof Date) {
+        return new Date(dateString).toLocaleDateString('id-ID');
+      }
+      // If it's already a string in the format YYYY-MM-DD
+      return dateString;
+    } catch (e) {
+      console.error("Date formatting error:", e);
+      return dateString;
     }
-    // If it's already a string in the format YYYY-MM-DD
-    return dateString;
   };
 
   // Get badge variant based on status
@@ -106,7 +159,18 @@ const BookingList = () => {
   }
 
   if (error) {
-    return <Alert variant="danger">{error}</Alert>;
+    return (
+      <div>
+        <Alert variant="danger">{error}</Alert>
+        <Button 
+          variant="primary" 
+          onClick={() => window.location.reload()}
+          className="mt-3"
+        >
+          Coba Lagi
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -137,7 +201,7 @@ const BookingList = () => {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking.rowIndex}>
-                  <td>{booking.Timestamp ? new Date(booking.Timestamp).toLocaleDateString('id-ID') : 'N/A'}</td>
+                  <td>{booking.Timestamp ? formatDate(booking.Timestamp) : 'N/A'}</td>
                   <td>{booking['Full Name']}</td>
                   <td>{booking.Email}</td>
                   <td>{booking.Phone}</td>

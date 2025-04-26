@@ -23,71 +23,52 @@ export default async function handler(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const path = url.pathname;
   
-  // Handle Admin Auth - perbaikan deteksi permintaan auth
-  if (path === '/api/admin/auth' || 
-    (req.method === 'POST' && req.body && 
-    ((req.body.username && req.body.password) || req.body.action === 'auth'))) {
-
-  if (req.method === 'POST') {
-    try {
-      const { username, password } = req.body;
-      
-      if (!username || !password) {
-        return res.status(400).json({
+  console.log('Received request to path:', path, 'Method:', req.method);
+  
+  // Handle Admin Auth
+  if (path === '/api/admin/auth') {
+    if (req.method === 'POST') {
+      try {
+        console.log('Processing admin auth request');
+        const { username, password } = req.body;
+        
+        if (!username || !password) {
+          return res.status(400).json({
+            status: 'error',
+            message: 'Username and password are required'
+          });
+        }
+        
+        // Simple credential validation
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+          // Generate simple token
+          const token = 'admin_' + Math.random().toString(36).substring(2, 15) + 
+                       '_' + new Date().getTime().toString(36);
+          
+          return res.status(200).json({
+            status: 'success',
+            message: 'Login successful',
+            token: token
+          });
+        } else {
+          return res.status(401).json({
+            status: 'error',
+            message: 'Invalid credentials'
+          });
+        }
+      } catch (error) {
+        console.error('Admin auth error:', error);
+        return res.status(500).json({
           status: 'error',
-          message: 'Username dan password wajib diisi'
+          message: 'Authentication failed: ' + (error.message || 'Unknown error')
         });
       }
-      
-      console.log("Mencoba verifikasi kredensial untuk:", username);
-      
-      // Simple credential validation
-      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        // Generate simple token
-        const token = 'admin_' + Math.random().toString(36).substring(2, 15) + 
-                    '_' + new Date().getTime().toString(36);
-        
-        const responseData = {
-          status: 'success',
-          message: 'Login berhasil',
-          token: token
-        };
-        
-        console.log("Login berhasil, mengirim respons:", JSON.stringify(responseData));
-        
-        // Pastikan respons berformat JSON yang valid
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(200).json(responseData);
-      } else {
-        const responseData = {
-          status: 'error',
-          message: 'Kredensial tidak valid'
-        };
-        
-        console.log("Login gagal, mengirim respons:", JSON.stringify(responseData));
-        
-        // Pastikan respons berformat JSON yang valid
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(401).json(responseData);
-      }
-    } catch (error) {
-      console.error('Admin auth error:', error);
-      
-      // Pastikan respons berformat JSON yang valid
-      res.setHeader('Content-Type', 'application/json');
-      return res.status(500).json({
+    } else {
+      return res.status(405).json({ 
         status: 'error',
-        message: 'Autentikasi gagal: ' + (error.message || 'Unknown error')
+        message: 'Method not allowed' 
       });
     }
-  } else {
-    // Pastikan respons berformat JSON yang valid
-    res.setHeader('Content-Type', 'application/json');
-    return res.status(405).json({ 
-      status: 'error',
-      message: 'Metode tidak diizinkan' 
-    });
-  }
   }
   
   // Handle Admin Bookings API
@@ -95,21 +76,37 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       // Fetch all bookings
       try {
+        console.log('Fetching all bookings');
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 12000); // Extended timeout
         
         try {
           const response = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=getAllBookings`, { 
-            signal: controller.signal 
+            signal: controller.signal,
+            headers: {
+              'Accept': 'application/json'
+            }
           });
           clearTimeout(timeoutId);
           
           if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`Error response from GAS: ${response.status}`, errorText);
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           
-          const data = await response.json();
-          return res.status(200).json(data);
+          try {
+            const data = await response.json();
+            console.log('Bookings data received');
+            return res.status(200).json(data);
+          } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            // If parsing fails, construct a valid JSON response
+            return res.status(500).json({
+              status: 'error',
+              message: 'Invalid JSON received from Google Apps Script'
+            });
+          }
         } catch (error) {
           clearTimeout(timeoutId);
           throw error;
@@ -125,6 +122,7 @@ export default async function handler(req, res) {
     // Update booking status
     else if (req.method === 'POST') {
       try {
+        console.log('Processing booking status update');
         const { rowIndex, status } = req.body;
         
         if (!rowIndex || !status) {
@@ -135,13 +133,14 @@ export default async function handler(req, res) {
         }
         
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 12000); // Extended timeout
         
         try {
           const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
             },
             body: JSON.stringify({
               action: 'updateBookingStatus',
@@ -153,11 +152,21 @@ export default async function handler(req, res) {
           clearTimeout(timeoutId);
           
           if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`Error updating booking: ${response.status}`, errorText);
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           
-          const data = await response.json();
-          return res.status(200).json(data);
+          try {
+            const data = await response.json();
+            return res.status(200).json(data);
+          } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            return res.status(500).json({
+              status: 'error',
+              message: 'Invalid JSON received from Google Apps Script'
+            });
+          }
         } catch (error) {
           clearTimeout(timeoutId);
           throw error;
@@ -188,7 +197,7 @@ export default async function handler(req, res) {
         console.log(`Sending GET request to: ${GOOGLE_APPS_SCRIPT_URL}?${queryString}`);
         
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000); // Increased timeout
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // Increased timeout
         try {
           const fetchResponse = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?${queryString}`, {
             method: 'GET',

@@ -19,39 +19,42 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      // Log untuk debugging
       console.log("Mencoba login dengan username:", username);
       
-      // Tambahkan parameter action=auth untuk memudahkan identifikasi di proxy
-      const response = await fetch('/api/proxy', {
+      const response = await fetch('/api/admin/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          username, 
-          password,
-          action: 'auth' // Tambahkan parameter ini untuk identifikasi di proxy.js
-        }),
+        body: JSON.stringify({ username, password }),
       });
-  
-      // Debug respons mentah
+
+      // Debug response
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error response:", errorText);
+        console.error(`Login error status: ${response.status} ${response.statusText}`);
+        try {
+          const errorText = await response.text();
+          console.error("Error response content:", errorText);
+        } catch (e) {
+          console.error("Could not read error response");
+        }
         return { success: false, message: `Server error: ${response.status}` };
       }
       
-      // Coba parse JSON
+      // Try to parse JSON response
       try {
         const data = await response.json();
+        console.log("Login response data:", data);
         
         if (data.status === 'success') {
           localStorage.setItem('adminToken', data.token);
           setToken(data.token);
           return { success: true };
         } else {
-          return { success: false, message: data.message || "Login gagal" };
+          return { 
+            success: false, 
+            message: data.message || "Login gagal dengan respon yang tidak diketahui" 
+          };
         }
       } catch (parseError) {
         console.error("JSON parse error:", parseError);
@@ -59,7 +62,10 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, message: 'Login gagal. Periksa koneksi jaringan atau hubungi administrator.' };
+      return { 
+        success: false, 
+        message: 'Login gagal. Periksa koneksi jaringan atau hubungi administrator.' 
+      };
     }
   };
 
