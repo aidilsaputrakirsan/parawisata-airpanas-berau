@@ -19,14 +19,15 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Cek path URL
+  // Cek path URL dan query parameters
   const url = new URL(req.url, `http://${req.headers.host}`);
   const path = url.pathname;
+  const action = url.searchParams.get('action') || (req.body && req.body.action);
   
-  console.log('Received request to path:', path, 'Method:', req.method);
+  console.log('Received request to path:', path, 'Method:', req.method, 'Action:', action);
   
-  // Handle Admin Auth
-  if (path === '/api/admin/auth') {
+  // Handle Admin Auth (bisa melalui path atau parameter action di body)
+  if (path === '/api/admin/auth' || action === 'admin_auth') {
     if (req.method === 'POST') {
       try {
         console.log('Processing admin auth request');
@@ -45,12 +46,14 @@ export default async function handler(req, res) {
           const token = 'admin_' + Math.random().toString(36).substring(2, 15) + 
                        '_' + new Date().getTime().toString(36);
           
+          console.log('Admin login successful for:', username);
           return res.status(200).json({
             status: 'success',
             message: 'Login successful',
             token: token
           });
         } else {
+          console.log('Login failed - invalid credentials for:', username);
           return res.status(401).json({
             status: 'error',
             message: 'Invalid credentials'
@@ -71,9 +74,9 @@ export default async function handler(req, res) {
     }
   }
   
-  // Handle Admin Bookings API
-  else if (path === '/api/admin/bookings') {
-    if (req.method === 'GET') {
+  // Handle getAllBookings - bisa melalui path atau parameter action
+  else if (path === '/api/admin/bookings' || action === 'getAllBookings') {
+    if (req.method === 'GET' || (req.method === 'POST' && action === 'getAllBookings')) {
       // Fetch all bookings
       try {
         console.log('Fetching all bookings');
@@ -120,7 +123,7 @@ export default async function handler(req, res) {
       }
     }
     // Update booking status
-    else if (req.method === 'POST') {
+    else if (req.method === 'POST' && !action) {
       try {
         console.log('Processing booking status update');
         const { rowIndex, status } = req.body;
@@ -182,6 +185,67 @@ export default async function handler(req, res) {
       return res.status(405).json({ 
         status: 'error',
         message: 'Method not allowed' 
+      });
+    }
+  }
+  
+  // Handle updateBookingStatus via action parameter in the body
+  else if (req.method === 'POST' && action === 'updateBookingStatus') {
+    try {
+      console.log('Processing booking status update via action parameter');
+      const { rowIndex, status } = req.body;
+      
+      if (!rowIndex || !status) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Row index and status are required'
+        });
+      }
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000); // Extended timeout
+      
+      try {
+        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'updateBookingStatus',
+            rowIndex: rowIndex,
+            status: status
+          }),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error(`Error updating booking: ${response.status}`, errorText);
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        try {
+          const data = await response.json();
+          return res.status(200).json(data);
+        } catch (parseError) {
+          console.error('JSON parse error:', parseError);
+          return res.status(500).json({
+            status: 'error',
+            message: 'Invalid JSON received from Google Apps Script'
+          });
+        }
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error updating booking:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Failed to update booking: ' + (error.message || 'Unknown error')
       });
     }
   }

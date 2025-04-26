@@ -21,12 +21,17 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log("Mencoba login dengan username:", username);
       
-      const response = await fetch('/api/admin/auth', {
+      // Gunakan /api/proxy dengan parameter action=admin_auth untuk login
+      const response = await fetch('/api/proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ 
+          username, 
+          password,
+          action: 'admin_auth'  // Parameter kunci untuk membedakan request auth
+        }),
       });
 
       // Debug response

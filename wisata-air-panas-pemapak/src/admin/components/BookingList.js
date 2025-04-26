@@ -17,7 +17,8 @@ const BookingList = () => {
         setLoading(true);
         
         console.log("Fetching bookings data...");
-        const response = await fetch('/api/admin/bookings');
+        // Gunakan /api/proxy dengan parameter action=getAllBookings
+        const response = await fetch('/api/proxy?action=getAllBookings');
         
         // Debug response
         if (!response.ok) {
@@ -70,12 +71,14 @@ const BookingList = () => {
       setUpdateLoading({...updateLoading, [booking.rowIndex]: true});
       
       console.log(`Updating booking ${booking.rowIndex} status to ${newStatus}`);
-      const response = await fetch('/api/admin/bookings', {
+      // Gunakan /api/proxy untuk update status
+      const response = await fetch('/api/proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          action: 'updateBookingStatus', // Parameter penting untuk proxy.js
           rowIndex: booking.rowIndex,
           status: newStatus
         }),
