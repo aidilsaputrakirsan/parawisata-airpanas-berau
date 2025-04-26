@@ -19,7 +19,7 @@ const AdminLayout = ({ children }) => {
     return (
       <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
         <Spinner animation="border" role="status" variant="primary">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">Memuat...</span>
         </Spinner>
       </Container>
     );
@@ -31,35 +31,89 @@ const AdminLayout = ({ children }) => {
   }
 
   return (
-    <div className="admin-layout">
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <Container>
-          <Navbar.Brand as={Link} to="/admin/dashboard">Wisata Air Panas Admin</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/admin/dashboard" active={location.pathname === '/admin/dashboard'}>Dashboard</Nav.Link>
-              <Nav.Link as={Link} to="/admin/bookings" active={location.pathname === '/admin/bookings'}>Bookings</Nav.Link>
-            </Nav>
-            <Nav>
-              <Nav.Link as={Link} to="/" target="_blank">View Website</Nav.Link>
-              <Button variant="outline-light" onClick={logout}>
-                Logout
-              </Button>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+    <div className="admin-layout d-flex">
+      {/* Sidebar Navigation */}
+      <div className="sidebar bg-dark text-white">
+        <div className="sidebar-header p-3 text-center">
+          <h5 className="mb-0">
+            <i className="fas fa-hot-tub me-2"></i>
+            Air Panas Pemapak
+          </h5>
+          <div className="small text-light">Panel Admin</div>
+        </div>
+        <div className="sidebar-menu">
+          <Nav className="flex-column">
+            <Nav.Link 
+              as={Link} 
+              to="/admin/dashboard" 
+              active={location.pathname === '/admin/dashboard'} 
+              className={`sidebar-link ${location.pathname === '/admin/dashboard' ? 'active' : ''}`}
+            >
+              <i className="fas fa-chart-line me-2"></i> Dasbor
+            </Nav.Link>
+            <Nav.Link 
+              as={Link} 
+              to="/admin/bookings" 
+              active={location.pathname === '/admin/bookings'} 
+              className={`sidebar-link ${location.pathname === '/admin/bookings' ? 'active' : ''}`}
+            >
+              <i className="fas fa-ticket-alt me-2"></i> Pemesanan
+            </Nav.Link>
+          </Nav>
+        </div>
+        <div className="sidebar-footer">
+          <Nav className="flex-column mt-auto">
+            <Nav.Link as={Link} to="/" target="_blank" className="sidebar-link">
+              <i className="fas fa-external-link-alt me-2"></i> Lihat Situs
+            </Nav.Link>
+            <Button 
+              variant="outline-light" 
+              onClick={logout} 
+              className="mt-2 w-100 sidebar-logout"
+            >
+              <i className="fas fa-sign-out-alt me-2"></i> Keluar
+            </Button>
+          </Nav>
+        </div>
+      </div>
 
-      <Container className="py-4">
-        {children}
-      </Container>
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Top Navigation */}
+        <Navbar bg="white" expand="lg" className="shadow-sm mb-4 top-nav">
+          <Container fluid>
+            <Navbar.Brand className="fw-bold d-md-none">
+              <i className="fas fa-hot-tub me-2"></i>
+              Air Panas Pemapak
+            </Navbar.Brand>
+            <div className="d-flex align-items-center ms-auto">
+              <div className="me-3 text-end">
+                <span className="small text-muted">Selamat Datang,</span>
+                <div className="fw-bold">Admin</div>
+              </div>
+              <img 
+                src="/api/placeholder/40/40" 
+                alt="Admin" 
+                className="rounded-circle border"
+              />
+            </div>
+          </Container>
+        </Navbar>
 
-      <footer className="bg-dark text-white text-center py-3 mt-5">
-        <Container>
-          <p className="mb-0">© 2025 Wisata Air Panas Pemapak Admin</p>
+        {/* Page Content */}
+        <Container fluid className="py-3 px-4">
+          {children}
         </Container>
-      </footer>
+
+        {/* Footer */}
+        <footer className="border-top mt-4 py-3 bg-white">
+          <Container fluid className="px-4">
+            <div className="text-center text-md-start text-muted">
+              <small>© 2025 Wisata Air Panas Pemapak - Panel Admin</small>
+            </div>
+          </Container>
+        </footer>
+      </div>
     </div>
   );
 };
