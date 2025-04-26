@@ -3,7 +3,6 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
-import '../../styles/components/testimonial.css';
 
 const TestimonialSection = () => {
   const testimonials = [

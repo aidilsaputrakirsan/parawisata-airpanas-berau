@@ -12,7 +12,6 @@ import {
   faStore
 } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
-import '../../styles/components/facilities.css';
 
 const FacilitiesSection = () => {
   const facilities = [

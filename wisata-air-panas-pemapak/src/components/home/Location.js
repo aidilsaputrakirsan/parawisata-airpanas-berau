@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCar, faBus, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import 'leaflet/dist/leaflet.css';
-import '../../styles/components/location.css';
 
 // Fix untuk marker icon di Leaflet
 import L from 'leaflet';

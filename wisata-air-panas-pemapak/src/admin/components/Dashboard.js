@@ -12,6 +12,10 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const API_URL = isDevelopment 
+  ? 'http://localhost:8080/https://script.google.com/macros/s/AKfycbweRBA2DbyK3WdUurKRgpsGgJ_gPJ8Z7VECWVmTKNpgLIjlALQzoHkwraPg0fRpcXlD/exec' 
+  : '/api/proxy';
 
   useEffect(() => {
     const fetchData = async () => {

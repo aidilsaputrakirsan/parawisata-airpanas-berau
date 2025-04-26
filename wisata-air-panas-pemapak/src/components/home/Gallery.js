@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import '../../styles/components/gallery.css';
 import kolam1 from '../../assets/images/gallery/kolam-1.jpg';
 import alam1 from '../../assets/images/gallery/alam-1.jpg';
 

@@ -8,7 +8,6 @@ import {
   faLeaf, 
   faMountain 
 } from '@fortawesome/free-solid-svg-icons';
-import '../../styles/components/about.css';
 import aboutImage from '../../assets/images/about.jpg'
 
 const AboutSection = () => {

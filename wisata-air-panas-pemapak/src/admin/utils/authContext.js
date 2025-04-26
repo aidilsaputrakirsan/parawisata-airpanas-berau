@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
+// Deteksi environment
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,7 +24,24 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log("Mencoba login dengan username:", username);
       
-      // Gunakan /api/proxy dengan parameter action=admin_auth untuk login
+      // SOLUSI UNTUK DEVELOPMENT: Validasi login secara lokal
+      if (isDevelopment) {
+        // Kredensial admin yang sama dengan di api/proxy.js
+        if (username === "admin@wisataairpemapak.com" && password === "wisataairpemapakberau") {
+          // Generate token sederhana
+          const token = 'admin_dev_' + Math.random().toString(36).substring(2, 15);
+          localStorage.setItem('adminToken', token);
+          setToken(token);
+          return { success: true };
+        } else {
+          return { 
+            success: false, 
+            message: "Kredensial tidak valid" 
+          };
+        }
+      }
+      
+      // Kode asli untuk production di Vercel
       const response = await fetch('/api/proxy', {
         method: 'POST',
         headers: {
@@ -30,10 +50,10 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ 
           username, 
           password,
-          action: 'admin_auth'  // Parameter kunci untuk membedakan request auth
+          action: 'admin_auth'
         }),
       });
-
+      
       // Debug response
       if (!response.ok) {
         console.error(`Login error status: ${response.status} ${response.statusText}`);
@@ -46,7 +66,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: `Server error: ${response.status}` };
       }
       
-      // Try to parse JSON response
+      // Parse JSON response
       try {
         const data = await response.json();
         console.log("Login response data:", data);
@@ -67,9 +87,9 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      return { 
-        success: false, 
-        message: 'Login gagal. Periksa koneksi jaringan atau hubungi administrator.' 
+      return {
+        success: false,
+        message: 'Login gagal. Periksa koneksi jaringan atau hubungi administrator.'
       };
     }
   };

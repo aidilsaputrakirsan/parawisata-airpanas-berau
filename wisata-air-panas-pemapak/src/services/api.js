@@ -1,8 +1,10 @@
 // Deteksi environment
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-// URL untuk API
-const API_URL = isDevelopment ? 'http://localhost:3000/api/proxy' : '/api/proxy';
+// Perubahan di sini untuk menggunakan CORS proxy di local development
+const API_URL = isDevelopment 
+  ? 'http://localhost:8080/https://script.google.com/macros/s/AKfycbweRBA2DbyK3WdUurKRgpsGgJ_gPJ8Z7VECWVmTKNpgLIjlALQzoHkwraPg0fRpcXlD/exec' 
+  : '/api/proxy';
 
 // Helper function untuk menangani respons Fetch
 const handleFetchResponse = async (response) => {
