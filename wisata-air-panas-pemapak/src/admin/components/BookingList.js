@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Form, Badge, Alert, Spinner } from 'react-bootstrap';
+import { API_URL } from '../../config/api';
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
@@ -17,8 +18,7 @@ const BookingList = () => {
         setLoading(true);
         
         console.log("Fetching bookings data...");
-        // Gunakan /api/proxy dengan parameter action=getAllBookings
-        const response = await fetch('/api/proxy?action=getAllBookings');
+        const response = await fetch(`${API_URL}?action=getAllBookings`);
         
         // Debug response
         if (!response.ok) {
@@ -71,14 +71,14 @@ const BookingList = () => {
       setUpdateLoading({...updateLoading, [booking.rowIndex]: true});
       
       console.log(`Updating booking ${booking.rowIndex} status to ${newStatus}`);
-      // Gunakan /api/proxy untuk update status
-      const response = await fetch('/api/proxy', {
+      // Gunakan API_URL untuk update status
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          action: 'updateBookingStatus', // Parameter penting untuk proxy.js
+          action: 'updateBookingStatus', 
           rowIndex: booking.rowIndex,
           status: newStatus
         }),

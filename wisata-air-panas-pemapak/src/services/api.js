@@ -1,10 +1,5 @@
-// Deteksi environment
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-// Perubahan di sini untuk menggunakan CORS proxy di local development
-const API_URL = isDevelopment 
-  ? 'http://localhost:8080/https://script.google.com/macros/s/AKfycbweRBA2DbyK3WdUurKRgpsGgJ_gPJ8Z7VECWVmTKNpgLIjlALQzoHkwraPg0fRpcXlD/exec' 
-  : '/api/proxy';
+// src/services/api.js
+import { API_URL } from '../config/api';
 
 // Helper function untuk menangani respons Fetch
 const handleFetchResponse = async (response) => {
@@ -88,7 +83,7 @@ const bookingService = {
 
       // Kirim data dengan timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // Increased timeout to 15 seconds
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // Timeout 15 seconds
       try {
         const response = await fetch(API_URL, {
           method: 'POST',

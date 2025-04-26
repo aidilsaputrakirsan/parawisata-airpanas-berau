@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL, ADMIN_CREDENTIALS } from '../../config/api';
 
 const AuthContext = createContext();
 
@@ -26,8 +27,8 @@ export const AuthProvider = ({ children }) => {
       
       // SOLUSI UNTUK DEVELOPMENT: Validasi login secara lokal
       if (isDevelopment) {
-        // Kredensial admin yang sama dengan di api/proxy.js
-        if (username === "admin@wisataairpemapak.com" && password === "wisataairpemapakberau") {
+        // Kredensial admin dari konfigurasi
+        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
           // Generate token sederhana
           const token = 'admin_dev_' + Math.random().toString(36).substring(2, 15);
           localStorage.setItem('adminToken', token);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Alert, Spinner, Table, Badge } from 'react-bootstrap';
+import { API_URL } from '../../config/api';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -12,20 +13,21 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const isDevelopment = process.env.NODE_ENV === 'development';
-  const API_URL = isDevelopment 
-  ? 'http://localhost:8080/https://script.google.com/macros/s/AKfycbweRBA2DbyK3WdUurKRgpsGgJ_gPJ8Z7VECWVmTKNpgLIjlALQzoHkwraPg0fRpcXlD/exec' 
-  : '/api/proxy';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/proxy?action=getAllBookings');
+        const response = await fetch(`${API_URL}?action=getAllBookings`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
         const data = await response.json();
 
         if (data.status === 'success') {
-          const bookings = data.data;
+          const bookings = data.data || [];
           
           // Calculate stats
           const pending = bookings.filter(b => !b.Status || b.Status === 'Pending').length;
@@ -52,9 +54,10 @@ const Dashboard = () => {
             recentBookings
           });
         } else {
-          setError('Failed to load data: ' + data.message);
+          setError('Failed to load data: ' + (data.message || 'Unknown error'));
         }
       } catch (error) {
+        console.error('Error fetching dashboard data:', error);
         setError('Error loading data: ' + error.message);
       } finally {
         setLoading(false);
@@ -63,6 +66,16 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+
+   // Format date for display
+   const formatDate = (dateString) => {
+    if (!dateString) return '';
+    try {
+      return new Date(dateString).toLocaleDateString('id-ID');
+    } catch (e) {
+      return dateString;
+    }
+  };
 
   // Get badge variant based on status
   const getStatusBadge = (status) => {
@@ -76,16 +89,6 @@ const Dashboard = () => {
       case 'Pending':
       default:
         return 'warning';
-    }
-  };
-
-  // Format date for display
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-    try {
-      return new Date(dateString).toLocaleDateString('id-ID');
-    } catch (e) {
-      return dateString;
     }
   };
 
