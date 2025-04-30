@@ -136,14 +136,14 @@ const Contact = () => {
     {
       icon: faPhone,
       title: 'Telepon',
-      content: '+62 812-3456-7890',
-      link: 'tel:+6281234567890'
+      content: '+62 821-4807-1726',
+      link: 'tel:+6282148071726'
     },
     {
       icon: faEnvelope,
       title: 'Email',
-      content: 'info@wisataairpanaspemapak.com',
-      link: 'mailto:info@wisataairpanaspemapak.com'
+      content: 'wisataairpanasasinpemapak@gmail.com',
+      link: 'mailto:wisataairpanasasinpemapak@gmail.com'
     },
     {
       icon: faClock,

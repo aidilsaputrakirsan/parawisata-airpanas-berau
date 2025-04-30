@@ -1,6 +1,6 @@
 //email innosys
 // URL Google Apps Script
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbweRBA2DbyK3WdUurKRgpsGgJ_gPJ8Z7VECWVmTKNpgLIjlALQzoHkwraPg0fRpcXlD/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxaUdPsnQnth_JO1WZsSUXfarbjn0p0YA_Tf2b02JcrBGGSQTtPAV7Ewf3W7H1yZj1W/exec';
 
 // Hardcoded credentials untuk admin
 const ADMIN_USERNAME = "admin@wisataairpemapak.com";

@@ -12,6 +12,7 @@ import galleryalam3 from '../assets/images/gallery/alam-3.jpg'
 import galleryfas1 from '../assets/images/gallery/fasilitas-1.jpg'
 import galleryfas2 from '../assets/images/gallery/fasilitas-2.jpg'
 import galleryfas3 from '../assets/images/gallery/fasilitas-3.jpg'
+import videoTour from '../assets/images/gallery/video-tour.mp4'
 
 const Gallery = () => {
   useEffect(() => {
@@ -213,22 +214,17 @@ const Gallery = () => {
                 viewport={{ once: true }}
                 className="video-wrapper position-relative rounded overflow-hidden shadow-lg"
               >
-                {/* Placeholder for video - gunakan video asli nanti */}
-                <div className="video-placeholder d-flex align-items-center justify-content-center">
-                  <div className="text-center text-white p-4">
-                    <h3 className="mb-3">Video Tour akan segera hadir!</h3>
-                    <p>Kami sedang menyiapkan video tour terbaik untuk Anda.</p>
-                  </div>
+                <div className="ratio ratio-16x9">
+                  <video 
+                    src={videoTour} 
+                    title="Video Tour Wisata Air Panas Pemapak"
+                    controls
+                    autoPlay
+                    muted
+                    playsInline
+                    className="w-100 h-100 object-fit-cover"
+                  />
                 </div>
-                
-                {/* Uncomment when video is ready */}
-                {/* <div className="ratio ratio-16x9">
-                  <iframe 
-                    src="https://www.youtube.com/watch?v=sj0yp-YeP2g" 
-                    title="Video Tour Wisata Air Panas Pemapak" 
-                    allowFullScreen
-                  ></iframe>
-                </div> */}
               </motion.div>
             </Col>
           </Row>

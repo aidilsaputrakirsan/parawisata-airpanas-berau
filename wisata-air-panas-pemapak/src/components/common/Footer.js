@@ -78,7 +78,7 @@ const Footer = () => {
               </li>
               <li className="mb-3">
                 <FontAwesomeIcon icon={faEnvelope} className="me-2" />
-                <a href="mailto:info@wisataairpanaspemapak.com">info@wisataairpanaspemapak.com</a>
+                <a href="mailto:wisataairpanasasinpemapak@gmail.com">wisataairpanasasinpemapak@gmail.com</a>
               </li>
             </ul>
           </Col>

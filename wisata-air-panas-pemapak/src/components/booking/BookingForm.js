@@ -7,13 +7,14 @@ import {
   faCalendarAlt, 
   faUsers, 
   faMoneyBillWave, 
-  faQrcode, 
-  faUpload 
+  faCreditCard, 
+  faUpload,
+  faInfoCircle,
+  faCheckCircle,
+  faClock
 } from '@fortawesome/free-solid-svg-icons';
 import bookingService from '../../services/api';
 import '../../styles/components/booking-form.css';
-import bcaQrCode from '../../assets/images/payment/bca-qr.png';
-import mandiriQrCode from '../../assets/images/payment/mandiri-qr.png';
 
 const BookingForm = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -25,26 +26,17 @@ const BookingForm = () => {
   const [availability, setAvailability] = useState(null);
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
   
-  // QR Code dan detail rekening untuk pembayaran
-  const paymentMethods = [
-    {
-      bank: 'Bank BCA',
-      accountNumber: '1234567890',
-      accountName: 'PT. Wisata Air Panas Pemapak',
-      qrCodeImage: bcaQrCode
-    },
-    {
-      bank: 'Bank Mandiri',
-      accountNumber: '0987654321',
-      accountName: 'PT. Wisata Air Panas Pemapak',
-      qrCodeImage: mandiriQrCode
-    }
-  ];
+  // Informasi pembayaran - DIUPDATE
+  const paymentInfo = {
+    bank: 'Bankaltimtara',
+    accountNumber: '0062454032',
+    accountName: 'BUMK Bapinang Sejahtera'
+  };
 
-  // Daftar harga
+  // Daftar harga - DIUPDATE
   const priceList = {
-    adult: 25000, // Rp 25.000 per dewasa
-    child: 15000  // Rp 15.000 per anak
+    adult: 35000, // Rp 35.000 per dewasa
+    child: 5000   // Rp 5.000 per anak
   };
 
   // State untuk menghitung total harga
@@ -293,7 +285,10 @@ const BookingForm = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group className="mb-4">
-                        <Form.Label>Waktu Kunjungan</Form.Label>
+                        <Form.Label>
+                          <FontAwesomeIcon icon={faClock} className="me-2" />
+                          Waktu Kunjungan
+                        </Form.Label>
                         <Form.Select 
                           {...register('visitTime', { required: 'Waktu kunjungan wajib diisi' })}
                           isInvalid={!!errors.visitTime}
@@ -330,7 +325,7 @@ const BookingForm = () => {
                           isInvalid={visitors.adults < 1}
                         />
                         <Form.Text className="text-muted">
-                          Rp {priceList.adult.toLocaleString()} per orang
+                          Rp {priceList.adult.toLocaleString()} per orang (umur 17 tahun ke atas)
                         </Form.Text>
                         {visitors.adults < 1 && (
                           <Form.Control.Feedback type="invalid">
@@ -354,7 +349,7 @@ const BookingForm = () => {
                           name="children"
                         />
                         <Form.Text className="text-muted">
-                          Rp {priceList.child.toLocaleString()} per anak (5-12 tahun)
+                          Rp {priceList.child.toLocaleString()} per anak (umur 6-16 tahun)
                         </Form.Text>
                       </Form.Group>
                     </Col>
@@ -442,48 +437,107 @@ const BookingForm = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <Card className="payment-info-card shadow-lg mb-4">
-              <Card.Body className="p-4">
-                <Card.Title className="mb-4">
-                  <FontAwesomeIcon icon={faQrcode} className="me-2" />
+              <Card.Header className="bg-primary text-white">
+                <h5 className="mb-0">
+                  <FontAwesomeIcon icon={faCreditCard} className="me-2" />
                   Informasi Pembayaran
-                </Card.Title>
-                <p>
-                  Silakan lakukan pembayaran melalui salah satu metode di bawah ini:
-                </p>
-                
-                {paymentMethods.map((method, index) => (
-                  <div key={index} className="payment-method mb-3 pb-3">
-                    <h5>{method.bank}</h5>
-                    <p className="mb-2">No. Rekening: <strong>{method.accountNumber}</strong></p>
-                    <p className="mb-3">Atas Nama: <strong>{method.accountName}</strong></p>
-                    <div className="text-center mb-2">
-                      <img 
-                        src={method.qrCodeImage} 
-                        alt={`QR Code ${method.bank}`}
-                        className="qr-code-image"
-                      />
+                </h5>
+              </Card.Header>
+              <Card.Body className="p-4">
+                <div className="payment-details bg-light p-3 rounded mb-3">
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="icon-circle bg-primary text-white me-3">
+                      <FontAwesomeIcon icon={faMoneyBillWave} />
                     </div>
-                    <p className="text-center small text-muted">
-                      Scan QR Code untuk membayar
-                    </p>
-                    {index < paymentMethods.length - 1 && <hr />}
+                    <h5 className="mb-0">Detail Rekening</h5>
                   </div>
-                ))}
+                  <div className="ps-4 ms-2 mb-3 border-start border-primary">
+                    <p className="mb-1"><strong>Bank:</strong> {paymentInfo.bank}</p>
+                    <p className="mb-1"><strong>No. Rekening:</strong> <span className="fw-bold text-primary">{paymentInfo.accountNumber}</span></p>
+                    <p className="mb-0"><strong>Atas Nama:</strong> {paymentInfo.accountName}</p>
+                  </div>
+                  
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="icon-circle bg-success text-white me-3">
+                      <FontAwesomeIcon icon={faCheckCircle} />
+                    </div>
+                    <h5 className="mb-0">Langkah Pembayaran</h5>
+                  </div>
+                  <ol className="ps-4 ms-2 border-start border-success mb-0">
+                    <li className="mb-2">Transfer sejumlah <strong>Rp {totalPrice.toLocaleString()}</strong> ke rekening di atas</li>
+                    <li className="mb-2">Simpan bukti transfer Anda</li>
+                    <li className="mb-2">Unggah bukti transfer pada form pemesanan</li>
+                    <li className="mb-0">Kirim form pemesanan Anda</li>
+                  </ol>
+                </div>
                 
                 <Alert variant="info" className="mb-0">
-                  <strong>Catatan:</strong> Setelah melakukan pembayaran, jangan lupa untuk mengunggah bukti pembayaran pada form di samping.
+                  <div className="d-flex">
+                    <div className="me-3">
+                      <FontAwesomeIcon icon={faInfoCircle} size="lg" />
+                    </div>
+                    <div>
+                      <strong>Catatan Penting:</strong> 
+                      <p className="mb-0 mt-1">Setelah melakukan pembayaran, jangan lupa untuk mengunggah bukti pembayaran pada form di samping untuk konfirmasi pemesanan Anda.</p>
+                    </div>
+                  </div>
                 </Alert>
+              </Card.Body>
+            </Card>
+            
+            <Card className="booking-info-card shadow-lg mb-4">
+              <Card.Header className="bg-primary text-white">
+                <h5 className="mb-0">
+                  <FontAwesomeIcon icon={faMoneyBillWave} className="me-2" />
+                  Informasi Harga
+                </h5>
+              </Card.Header>
+              <Card.Body className="p-4">
+                <div className="price-category mb-3">
+                  <h6 className="border-bottom pb-2 mb-3">Harga Tiket Masuk:</h6>
+                  <ul className="list-unstyled pricing-list">
+                    <li className="d-flex justify-content-between align-items-center py-2">
+                      <span>Dewasa (17+ tahun)</span>
+                      <span className="badge bg-primary rounded-pill">Rp 35.000</span>
+                    </li>
+                    <li className="d-flex justify-content-between align-items-center py-2">
+                      <span>Anak (6-16 tahun)</span>
+                      <span className="badge bg-primary rounded-pill">Rp 5.000</span>
+                    </li>
+                    <li className="d-flex justify-content-between align-items-center py-2">
+                      <span>Balita (0-5 tahun)</span>
+                      <span className="badge bg-success rounded-pill">Gratis</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="price-category">
+                  <h6 className="border-bottom pb-2 mb-3">Fasilitas Tambahan:</h6>
+                  <ul className="list-unstyled pricing-list">
+                    <li className="d-flex justify-content-between align-items-center py-2">
+                      <span>Onsen (per jam)</span>
+                      <span className="badge bg-primary rounded-pill">Rp 100.000</span>
+                    </li>
+                  </ul>
+                  <p className="small text-muted mt-2 fst-italic">
+                    *Pembayaran fasilitas onsen dilakukan langsung di lokasi
+                  </p>
+                </div>
               </Card.Body>
             </Card>
             
             <Card className="booking-info-card shadow-lg">
               <Card.Header className="bg-primary text-white">
-                <h5 className="mb-0">Informasi Booking</h5>
+                <h5 className="mb-0">
+                  <FontAwesomeIcon icon={faInfoCircle} className="me-2" />
+                  Informasi Booking
+                </h5>
               </Card.Header>
               <Card.Body className="p-4">
                 <p>
-                  <strong>Jam Operasional:</strong><br />
-                  Setiap hari: 08:00 - 17:00 WITA
+                <strong>Jam Operasional Booking dan Wisata:</strong><br />
+                Sistem booking tersedia 24 jam setiap hari.<br />
+                Tempat wisata beroperasi setiap hari dari pukul 08:00 - 18:00 WITA.
                 </p>
                 <p>
                   <strong>Ketentuan Pemesanan:</strong>
@@ -491,13 +545,11 @@ const BookingForm = () => {
                 <ul>
                   <li>Pembayaran harus dilakukan minimal 1 hari sebelum tanggal kunjungan</li>
                   <li>Bukti pemesanan akan dikirimkan melalui email setelah pembayaran dikonfirmasi</li>
-                  <li>Pembatalan pemesanan dapat dilakukan maksimal 3 hari sebelum tanggal kunjungan untuk mendapatkan refund 50%</li>
-                  <li>Jika terjadi force majeure, pemesanan dapat dijadwalkan ulang</li>
                 </ul>
                 <p className="mb-0">
                   <strong>Kontak Bantuan:</strong><br />
-                  WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a><br />
-                  Email: <a href="mailto:booking@wisataairpanaspemapak.com">booking@wisataairpanaspemapak.com</a>
+                  WhatsApp: <a href="https://wa.me/6282148071726">+62 821-4807-1726</a><br />
+                  Email: <a href="mailto:wisataairpanasasinpemapak@gmail.com">wisataairpanasasinpemapak@gmail.com</a>
                 </p>
               </Card.Body>
             </Card>
