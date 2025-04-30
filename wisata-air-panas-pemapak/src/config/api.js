@@ -5,7 +5,7 @@
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 // URL Google Apps Script
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxaUdPsnQnth_JO1WZsSUXfarbjn0p0YA_Tf2b02JcrBGGSQTtPAV7Ewf3W7H1yZj1W/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwR5JQ81weAzLl4L4AAQbXigbkg_0OBsj-ptezyED6_gy_gDEITspQa0JGs3Zp2uzkd/exec';
 
 // URL untuk API - gunakan CORS proxy di localhost
 export const API_URL = isDevelopment 
