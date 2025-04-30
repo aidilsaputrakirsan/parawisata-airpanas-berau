@@ -92,18 +92,6 @@ const BookingList = () => {
         }),
       });
 
-      // Debug response
-      if (!response.ok) {
-        console.error(`Status update error: ${response.status} ${response.statusText}`);
-        try {
-          const errorText = await response.text();
-          console.error("Error response content:", errorText);
-        } catch (e) {
-          console.error("Could not read error response");
-        }
-        throw new Error(`Gagal memperbarui status: ${response.status} ${response.statusText}`);
-      }
-
       let data;
       try {
         // Coba parse sebagai JSON
