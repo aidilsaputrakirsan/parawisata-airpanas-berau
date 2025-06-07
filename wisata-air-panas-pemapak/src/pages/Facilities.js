@@ -25,8 +25,9 @@ import kantin from '../assets/images/facilities/kantin.jpg'
 import parking from '../assets/images/facilities/parking.jpg'
 import gazebo from '../assets/images/facilities/gazebo.jpg'
 import wifi from '../assets/images/facilities/wifi.jpg'
-import musholla from '../assets/images/facilities/musholla.jpg'
-import souvenir from '../assets/images/facilities/souvenir.jpg'
+import musholla from '../assets/images/facilities/musholla.jpg'   
+import { faHotTub } from '@fortawesome/free-solid-svg-icons';
+import onsenVipImage from '../assets/images/facilities/onsen-vip.jpg'
 
 
 const Facilities = () => {
@@ -71,16 +72,16 @@ const Facilities = () => {
   // Additional facilities data
   const additionalFacilities = [
     {
+      icon: faHotTub,
+      title: 'Onsen VIP Private Room',
+      description: 'Fasilitas premium dengan ruang perendaman kaki pribadi yang eksklusif. Dilengkapi dengan area bersantai, kursi nyaman, dan suasana yang tenang untuk pengalaman terapi kaki yang lebih personal dan mewah.',
+      image: onsenVipImage
+    },
+    {
       icon: faUmbrella,
       title: 'Gazebo & Tempat Istirahat',
       description: 'Gazebo dan tempat istirahat yang nyaman untuk bersantai sebelum atau sesudah berendam. Tersedia juga area berjemur untuk menikmati sinar matahari setelah berendam di air panas.',
       image: gazebo
-    },
-    {
-      icon: faWifi,
-      title: 'WiFi Gratis',
-      description: 'Koneksi internet WiFi gratis di seluruh area wisata untuk memudahkan Anda tetap terhubung dan berbagi momen liburan Anda dengan keluarga dan teman melalui media sosial.',
-      image: wifi
     },
     {
       icon: faPrayingHands,
@@ -89,11 +90,12 @@ const Facilities = () => {
       image: musholla
     },
     {
-      icon: faStore,
-      title: 'Toko Oleh-oleh',
-      description: 'Toko yang menjual berbagai cinderamata dan oleh-oleh khas Berau, Kalimantan Timur. Tersedia berbagai produk lokal seperti kerajinan tangan, makanan dan minuman khas daerah.',
-      image: souvenir
+      icon: faWifi,
+      title: 'WiFi Gratis',
+      description: 'Koneksi internet WiFi gratis di seluruh area wisata untuk memudahkan Anda tetap terhubung dan berbagi momen liburan Anda dengan keluarga dan teman melalui media sosial.',
+      image: wifi
     }
+    
   ];
 
   // Rules and information

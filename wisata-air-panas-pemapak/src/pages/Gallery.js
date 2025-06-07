@@ -12,6 +12,7 @@ import galleryalam3 from '../assets/images/gallery/alam-3.jpg'
 import galleryfas1 from '../assets/images/gallery/fasilitas-1.jpg'
 import galleryfas2 from '../assets/images/gallery/fasilitas-2.jpg'
 import galleryfas3 from '../assets/images/gallery/fasilitas-3.jpg'
+import galleryfas4 from '../assets/images/facilities/onsen-vip.jpg'
 import videoTour from '../assets/images/gallery/video-tour.mp4'
 
 const Gallery = () => {
@@ -91,6 +92,13 @@ const Gallery = () => {
       alt: 'Tempat Bilas',
       category: 'fasilitas',
       description: 'Fasilitas tempat bilas yang bersih dan nyaman untuk pengunjung setelah berendam.'
+    },
+    {
+      id: 10,
+      src: galleryfas4,
+      alt: 'Onsen VIP Private Room',
+      category: 'fasilitas',
+      description: 'Ruang onsen VIP eksklusif dengan kolam perendaman kaki pribadi, dilengkapi area santai yang nyaman untuk pengalaman terapi yang lebih personal.'
     }
   ];
 
