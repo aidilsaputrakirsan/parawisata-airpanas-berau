@@ -48,7 +48,7 @@ const Login = () => {
               <div className="login-icon-wrap mb-4">
                 <i className="fas fa-hot-tub fa-3x"></i>
               </div>
-              <h3 className="mb-2 fw-bold">Wisata Air Panas Pemapak</h3>
+              <h3 className="mb-2 fw-bold">Wisata Air Panas Asin Pemapak</h3>
               <p className="lead mb-0">Panel Admin</p>
             </div>
             <Card.Body className="p-5">
@@ -122,7 +122,7 @@ const Login = () => {
           </Card>
           
           <div className="text-center text-white mt-4">
-            <p className="mb-0 small">© 2025 Wisata Air Panas Pemapak. Semua Hak Dilindungi.</p>
+            <p className="mb-0 small">© 2025 Wisata Air Panas Asin Pemapak. Semua Hak Dilindungi.</p>
           </div>
         </Col>
       </Row>

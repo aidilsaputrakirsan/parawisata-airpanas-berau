@@ -14,13 +14,13 @@ const AboutSection = () => {
   const features = [
     {
       icon: faSpa,
-      title: 'Pemandian Air Panas Alami',
-      description: 'Kolam air panas dengan sumber alami mengandung mineral yang baik untuk kesehatan.'
+      title: 'Pemandian Air Panas Asin Alami',
+      description: 'Kolam air panas asin dengan sumber alami mengandung mineral yang baik untuk kesehatan.'
     },
     {
       icon: faWater,
       title: 'Berendam Menyehatkan',
-      description: 'Air panas kaya akan mineral yang membantu relaksasi otot dan melancarkan peredaran darah.'
+      description: 'Air panas asin kaya akan mineral yang membantu relaksasi otot dan melancarkan peredaran darah.'
     },
     {
       icon: faLeaf,
@@ -45,10 +45,10 @@ const AboutSection = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="section-title">Tentang Wisata Air Panas Pemapak</h2>
+              <h2 className="section-title">Tentang Wisata Air Panas Asin Pemapak</h2>
               <div className="divider mx-auto"></div>
               <p className="lead mt-4">
-                Wisata Air Panas Pemapak merupakan destinasi wisata alam yang menawarkan 
+                Wisata Air Panas Asin Pemapak merupakan destinasi wisata alam yang menawarkan 
                 pengalaman berendam di kolam air panas alami dengan pemandangan alam yang indah.
               </p>
             </motion.div>
@@ -65,7 +65,7 @@ const AboutSection = () => {
             >
               <Image 
                 src={aboutImage}
-                alt="Wisata Air Panas Pemapak" 
+                alt="Wisata Air Panas Asin Pemapak" 
                 className="img-fluid rounded shadow-lg"
               />
             </motion.div>
@@ -77,22 +77,23 @@ const AboutSection = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="mb-4">Pengalaman Pemandian Air Panas Terbaik di Kalimantan Timur</h3>
+              <h3 className="mb-4">Pengalaman Pemandian Air Panas Asin Terbaik di Kalimantan Timur</h3>
               <p>
-                Sumber air panas Pemapak merupakan salah satu keajaiban alam yang terletak di 
+                Sumber air panas asin pemapak merupakan salah satu keajaiban alam yang terletak di 
                 Desa Biatan Bapinang, Kecamatan Biatan, Kabupaten Berau, Kalimantan Timur. 
                 Air panas ini keluar langsung dari perut bumi dengan suhu yang ideal untuk berendam.
               </p>
               <p>
-                Dengan kandungan mineral alami, air panas di sini dipercaya memiliki khasiat 
-                untuk menyembuhkan berbagai penyakit kulit, melancarkan peredaran darah, dan 
-                membantu relaksasi tubuh. Dikelilingi oleh pepohonan rindang dan suasana yang sejuk, 
+                Dengan kandungan mineral alami dan garam yang tinggi, air panas asin di sini dipercaya 
+                memiliki khasiat untuk menyembuhkan berbagai penyakit kulit, melancarkan peredaran darah, dan 
+                membantu relaksasi tubuh, sehingga air panas asin pemapak merupakan salah satu wisata healing dan
+                wellness tourism terbaik di Kalimantan Timur. Dikelilingi oleh pepohonan rindang dan suasana yang sejuk, 
                 tempat ini menjadi oase di tengah kehidupan yang sibuk.
               </p>
               <p>
                 Kami menyediakan berbagai fasilitas yang memadai untuk membuat pengunjung nyaman 
                 selama menikmati pengalaman berendam di air panas. Nikmati momen bersantai bersama 
-                keluarga dan teman di Wisata Air Panas Pemapak.
+                keluarga dan teman di Wisata Air Panas Asin Pemapak.
               </p>
             </motion.div>
           </Col>

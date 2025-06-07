@@ -18,10 +18,10 @@ const Hero = () => {
               transition={{ duration: 0.8 }}
             >
               <h1 className="display-3 fw-bold mb-4">
-                Wisata Air Panas Pemapak
+                Wisata Air Panas Asin Pemapak
               </h1>
               <p className="lead mb-5">
-                Nikmati khasiat air panas alami dengan pemandangan alam yang indah di Kabupaten Berau, 
+                Nikmati terapi kaki dengan air panas asin alami yang menyehatkan di Kabupaten Berau, 
                 Kalimantan Timur. Tempat bersantai terbaik yang menyatu dengan alam.
               </p>
               <div className="d-flex justify-content-center gap-3">

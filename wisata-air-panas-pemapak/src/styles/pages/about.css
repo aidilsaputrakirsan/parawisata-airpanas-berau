@@ -197,3 +197,62 @@
       padding: 6rem 0 3rem;
     }
   }
+
+  /* Eco-Green Section */
+.eco-green-section {
+  padding: 5rem 0;
+}
+
+.eco-practices-card, .visitor-education-card {
+  background-color: var(--white-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.eco-practices-card:hover, .visitor-education-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-md);
+}
+
+.eco-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.eco-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.eco-list li::before {
+  content: '🌿';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.visitor-tips {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.visitor-tips li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.visitor-tips li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.eco-message {
+  border-left: 4px solid var(--success-color);
+}

@@ -13,7 +13,7 @@ const Home = () => {
     window.scrollTo(0, 0);
     
     // Set document title
-    document.title = 'Wisata Air Panas Pemapak - Destinasi Wisata Alam di Berau';
+    document.title = 'Wisata Air Panas Asin Pemapak - Destinasi Wisata Alam di Berau';
   }, []);
 
   return (

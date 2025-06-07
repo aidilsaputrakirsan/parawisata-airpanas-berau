@@ -40,11 +40,11 @@ const MainNavbar = () => {
           >
             <img 
               src={logoImage} 
-              alt="Wisata Air Panas Pemapak" 
+              alt="Wisata Air Panas Asin Pemapak" 
               style={{ height: '30px', maxHeight: '30px', width: 'auto' }} 
               className="d-inline-block align-top me-2"
             />
-            <span className="brand-text">Wisata Air Panas Pemapak</span>
+            <span className="brand-text">Wisata Air Panas Asin Pemapak</span>
           </motion.div>
         </Navbar.Brand>
         

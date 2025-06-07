@@ -84,7 +84,7 @@ const AdminLayout = ({ children }) => {
           <Container fluid>
             <Navbar.Brand className="fw-bold d-md-none">
               <i className="fas fa-hot-tub me-2"></i>
-              Air Panas Pemapak
+              Air Panas Asin Pemapak
             </Navbar.Brand>
             <div className="d-flex align-items-center ms-auto">
               <div className="me-3 text-end">
@@ -109,7 +109,7 @@ const AdminLayout = ({ children }) => {
         <footer className="border-top mt-4 py-3 bg-white">
           <Container fluid className="px-4">
             <div className="text-center text-md-start text-muted">
-              <small>© 2025 Wisata Air Panas Pemapak - Panel Admin</small>
+              <small>© 2025 Wisata Air Panas Asin Pemapak - Panel Admin</small>
             </div>
           </Container>
         </footer>

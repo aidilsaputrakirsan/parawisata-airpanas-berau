@@ -37,7 +37,7 @@ const Contact = () => {
     window.scrollTo(0, 0);
     
     // Set document title
-    document.title = 'Kontak - Wisata Air Panas Pemapak';
+    document.title = 'Kontak - Wisata Air Panas Asin Pemapak';
   }, []);
 
   // Form state
@@ -122,7 +122,7 @@ const Contact = () => {
     }
   };
 
-  // Koordinat untuk Wisata Air Panas Pemapak (perkiraan)
+  // Koordinat untuk Wisata Air Panas Asin Pemapak (perkiraan)
   const position = [2.1722, 117.9021];
 
   // Kontak info
@@ -366,7 +366,7 @@ const Contact = () => {
                   />
                   <Marker position={position}>
                     <Popup>
-                      <strong>Wisata Air Panas Pemapak</strong><br />
+                      <strong>Wisata Air Panas Asin Pemapak</strong><br />
                       Biatan Bapinang, Biatan,<br />
                       Kabupaten Berau, Kalimantan Timur 77372
                     </Popup>

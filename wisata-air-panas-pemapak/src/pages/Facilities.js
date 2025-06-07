@@ -35,7 +35,7 @@ const Facilities = () => {
     window.scrollTo(0, 0);
     
     // Set document title
-    document.title = 'Fasilitas - Wisata Air Panas Pemapak';
+    document.title = 'Fasilitas - Wisata Air Panas Asin Pemapak';
   }, []);
 
   const [activeTab, setActiveTab] = useState('main');
@@ -100,12 +100,12 @@ const Facilities = () => {
   const rulesAndInfo = [
     {
       icon: faInfoCircle,
-      title: 'Persiapan Berendam',
+      title: 'Persiapan Terapi Kaki',
       items: [
-        'Sebaiknya makan terlebih dahulu, jangan berendam dalam keadaan perut kosong',
-        'Membilas badan terlebih dahulu (rinse the body first)',
-        'Mulai berendam dengan kaki terlebih dahulu, hindari mencuci muka',
-        'Lepas aksesoris seperti jam, cincin, gelang'
+        'Sebaiknya makan terlebih dahulu sebelum melakukan terapi',
+        'Bersihkan kaki terlebih dahulu sebelum merendam',
+        'Duduk dengan nyaman di tepi kolam perendaman',
+        'Lepas alas kaki dan aksesoris di kaki'
       ]
     },
     {
@@ -119,21 +119,20 @@ const Facilities = () => {
       icon: faClock,
       title: 'Peringatan Penting',
       items: [
-        'Berendam secukupnya, bila anda sudah merasa pusing segera keluar dari kolam rendam',
-        'Dilarang memakai alas kaki',
-        'Dilarang berendam bagi yang mempunyai penyakit (jantung, hipertensi, epilepsi, asma)',
-        'Dilarang membawa handphone/camera',
-        'Dilarang memakai sabun/sampo di kolam rendam',
-        'Dilarang berbuat asusila',
-        'Dilarang berendam bagi orang yang sedang dalam pengaruh alkohol, masa menstruasi, memiliki luka terbuka, dan wanita hamil',
-        'Dilarang memakai jeans ke kolam rendam'
+         'Rendam kaki maksimal 15 menit untuk hasil optimal',
+         'Istirahat 10 menit sebelum sesi perendaman berikutnya',
+         'Jika merasa pusing atau tidak nyaman, segera angkat kaki dari kolam'
       ]
     },
     {
       icon: faShieldAlt,
-      title: 'Bantuan Darurat',
+      title: 'Aturan Terapi Perendaman Kaki',
       items: [
-        'Hubungi petugas jaga bila anda merasakan gejala sakit'
+        'Hanya untuk perendaman kaki, tidak untuk seluruh badan',
+        'Duduk di tepi kolam dengan kaki terendam hingga betis',
+        'Dilarang masuk ke dalam kolam secara keseluruhan',
+        'Gunakan handuk untuk mengeringkan kaki setelah terapi',
+        'Jangan gunakan sabun atau lotion saat merendam kaki'
       ]
     }
   ];

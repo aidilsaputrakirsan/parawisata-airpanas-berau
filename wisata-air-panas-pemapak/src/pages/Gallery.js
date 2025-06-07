@@ -20,7 +20,7 @@ const Gallery = () => {
     window.scrollTo(0, 0);
     
     // Set document title
-    document.title = 'Galeri - Wisata Air Panas Pemapak';
+    document.title = 'Galeri - Wisata Air Panas Asin Pemapak';
   }, []);
 
   const [modalShow, setModalShow] = useState(false);
@@ -41,7 +41,7 @@ const Gallery = () => {
       src: galleryalam1,
       alt: 'Pemandangan Hutan di Sekitar',
       category: 'alam',
-      description: 'Pemandangan hutan tropis yang masih asri di sekitar kawasan Wisata Air Panas Pemapak.'
+      description: 'Pemandangan hutan tropis yang masih asri di sekitar kawasan Wisata Air Panas Asin Pemapak.'
     },
     {
       id: 3,
@@ -112,7 +112,7 @@ const Gallery = () => {
             <Col lg={8} className="text-center text-white">
               <h1 className="display-4 fw-bold">Galeri</h1>
               <p className="lead">
-                Momen-momen indah dan berbagai sudut di Wisata Air Panas Pemapak
+                Momen-momen indah dan berbagai sudut di Wisata Air Panas Asin Pemapak
               </p>
             </Col>
           </Row>
@@ -199,7 +199,7 @@ const Gallery = () => {
                 <h2 className="section-title">Video Tour</h2>
                 <div className="divider mx-auto"></div>
                 <p className="lead mt-4">
-                  Lihat sekilas pengalaman yang akan Anda nikmati di Wisata Air Panas Pemapak
+                  Lihat sekilas pengalaman yang akan Anda nikmati di Wisata Air Panas Asin Pemapak
                 </p>
               </motion.div>
             </Col>
@@ -217,7 +217,7 @@ const Gallery = () => {
                 <div className="ratio ratio-16x9">
                   <video 
                     src={videoTour} 
-                    title="Video Tour Wisata Air Panas Pemapak"
+                    title="Video Tour Wisata Air Panas Asin Pemapak"
                     controls
                     autoPlay
                     muted

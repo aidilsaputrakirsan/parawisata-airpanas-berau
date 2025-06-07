@@ -10,7 +10,7 @@ const Booking = () => {
     window.scrollTo(0, 0);
     
     // Set document title
-    document.title = 'Booking - Wisata Air Panas Pemapak';
+    document.title = 'Booking - Wisata Air Panas Asin Pemapak';
   }, []);
 
   return (
@@ -21,7 +21,7 @@ const Booking = () => {
             <Col lg={8} className="text-center text-white">
               <h1 className="display-4 fw-bold">Booking</h1>
               <p className="lead">
-                Reservasi kunjungan Anda ke Wisata Air Panas Pemapak untuk pengalaman relaksasi terbaik.
+                Reservasi kunjungan Anda ke Wisata Air Panas Asin Pemapak untuk pengalaman relaksasi terbaik.
               </p>
             </Col>
           </Row>

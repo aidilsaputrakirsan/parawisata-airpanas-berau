@@ -22,9 +22,9 @@ const Footer = () => {
       <Container>
         <Row className="py-5">
           <Col lg={4} md={6} className="mb-4 mb-md-0">
-            <h5 className="text-uppercase mb-4">Wisata Air Panas Pemapak</h5>
+            <h5 className="text-uppercase mb-4">Wisata Air Panas Asin Pemapak</h5>
             <p>
-              Nikmati pengalaman berendam air panas alami dengan pemandangan alam yang 
+              Nikmati pengalaman berendam air panas asin alami dengan pemandangan alam yang 
               indah di Kalimantan Timur. Tempat terbaik untuk bersantai dan 
               menyegarkan pikiran bersama keluarga dan teman.
             </p>
@@ -89,7 +89,7 @@ const Footer = () => {
         <Row className="py-3">
           <Col md={6} className="text-center text-md-start">
             <p className="mb-0">
-              &copy; {currentYear} Wisata Air Panas Pemapak. All rights reserved.
+              &copy; {currentYear} Wisata Air Panas Asin Pemapak. All rights reserved.
             </p>
           </Col>
           <Col md={6} className="text-center text-md-end">
