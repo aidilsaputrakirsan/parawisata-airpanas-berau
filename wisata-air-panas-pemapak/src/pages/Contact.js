@@ -164,7 +164,7 @@ const Contact = () => {
     {
       icon: faInstagram,
       name: 'Instagram',
-      link: 'https://instagram.com/wisata-air-panas-pemapak',
+      link: 'https://www.instagram.com/wisataairpanas_asinpemapak',
       color: '#E1306C'
     },
     {
